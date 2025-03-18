@@ -1,0 +1,123 @@
+/* Main CSS file for the User Management Dashboard */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary-color: #16A085;          /* Elegant Jade Green */
+    --primary-light-color: #1ABC9C;    /* Soft Turquoise */
+    --primary-dark-color: #0E7C67;     /* Deep Teal */
+    
+    --secondary-color: #2980B9;        /* Royal Blue */
+    
+    --text-color: #2C3E50;             /* Rich Midnight Blue */
+    --heading-color: #1A252F;          /* Charcoal Navy */
+    
+    --background-color: #F8F9FA;       /* Soft Cloud White */
+    --card-background: #FFFFFF;        /* Crisp White */
+    --border-color: #DADFE1;           /* Gentle Gray Border */
+    
+    --light-gray: #ECF0F1;             /* Silky Silver */
+    --medium-gray: #BDC3C7;            /* Warm Gray */
+    --dark-gray: #7F8C8D;              /* Urban Slate */
+    
+    --danger-color: #f86454f0;           /* Striking Red Coral */
+    --success-color: #27AE60;          /* Vibrant Emerald Green */
+    --warning-color: #F39C12;          /* Golden Amber */
+}
+  
+/* Dark theme */
+.dark-theme {
+    --primary-color: #0D6EFD;          /* Bold Royal Blue */
+    --primary-light-color: #5B9BFF;    /* Soft Azure */
+    --primary-dark-color: #0546A0;     /* Deep Sapphire */
+    
+    --secondary-color: #8E44AD;        /* Majestic Purple */
+    
+    --text-color: #ECF0F1;             /* Soft White */
+    --heading-color: #FFFFFF;          /* Bright Pure White */
+    
+    --background-color: #18191A;       /* Rich Jet Black */
+    --card-background: #212529;        /* Graphite Black */
+    --border-color: #2C2F33;           /* Subtle Dark Gray */
+    
+    --light-gray: #3A3B3C;             /* Muted Charcoal */
+    --medium-gray: #4E4F50;            /* Refined Graphite */
+    --dark-gray: #626567;              /* Smoky Gray */
+    
+    --danger-color: #f97777eb;           /* Vibrant Crimson */
+    --success-color: #2ECC71;          /* Radiant Green */
+    --warning-color: #FFB74D;          /* Soft Sunset Orange */
+}
+
+  
+
+  body {
+    @apply font-sans text-text bg-background transition-colors duration-300;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-text-heading font-semibold;
+  }
+
+  a {
+    @apply text-primary hover:text-primary-dark transition-colors duration-200;
+  }
+
+  /* Focus styles for accessibility */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4;
+  }
+
+  .card {
+    @apply bg-background-card rounded-lg shadow border border-border p-6 mb-6;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-opacity-90 focus:ring-primary;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white hover:bg-opacity-90 focus:ring-secondary;
+  }
+
+  .btn-danger {
+    @apply bg-danger text-white hover:bg-opacity-90 focus:ring-danger;
+  }
+
+  .btn-success {
+    @apply bg-success text-white hover:bg-opacity-90 focus:ring-success;
+  }
+
+  .form-control {
+    @apply w-full bg-background-card border border-border rounded-md px-3 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200;
+  }
+
+  .form-group {
+    @apply mb-4;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-text mb-1;
+  }
+
+  .error-message {
+    @apply text-danger text-sm mt-1;
+  }
+
+  /* Skip to content link for accessibility */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white;
+  }
+}
