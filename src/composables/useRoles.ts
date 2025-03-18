@@ -1,6 +1,5 @@
 import { ref } from "vue";
 import type { Ref } from "vue";
-import { useNuxtApp } from "#app";
 import type { Role } from "~/types/user";
 
 export function useRoles() {
