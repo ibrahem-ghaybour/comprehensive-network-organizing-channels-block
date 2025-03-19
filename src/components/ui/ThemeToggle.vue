@@ -25,6 +25,7 @@
 </template>
 
 <script setup>
+import { storeToRefs } from "pinia";
 import { useThemeStore } from "~/store/theme";
 
 const themeStore = useThemeStore();

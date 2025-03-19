@@ -1,5 +1,3 @@
-import { defineNuxtPlugin } from '#app';
-
 export default defineNuxtPlugin(() => {
   // This plugin runs only on the client side
   

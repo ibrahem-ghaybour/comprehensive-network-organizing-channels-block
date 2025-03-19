@@ -9,19 +9,19 @@ interface Props {
 export async function apiRequest<T>({
   endpoint,
   method,
-  params,
+  params: params = { page: 1, sizePage: 10 },
   body,
   requireAuth = false,
-}: Props): Promise<{ data?: T; error?: string }> {
+}: Props): Promise<{ dataRes?: T; error?: string }> {
   try {
     const config = useRuntimeConfig();
     const API_BASE = config.public.API_BASE;
 
-    const token = localStorage.getItem("token");
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2QzMjNhNmMyOWU4YTBjZTJiMzI3OTUiLCJlbWFpbCI6ImdoYWlib3VyZ0BnbWFpbC5jb20iLCJuYW1lIjoiaWJyYWhpbSIsImlhdCI6MTc0MjM4NzM2OSwiZXhwIjoxNzQyMzkwOTY5fQ.6GOUhkeLP0s0ggIlGAtKEqz8hGR1n-nq-QgIbs7aXBE";
     if (requireAuth && !token) {
       return { error: "Authorization token is missing!" };
     }
-
     const response = await $fetch<T>(`${API_BASE}/${endpoint}`, {
       method,
       params,
@@ -32,12 +32,12 @@ export async function apiRequest<T>({
       body: body,
     });
 
-    return { data: response };
+    return { dataRes: response };
   } catch (error: any) {
     console.error(`Error in API request (${method} ${endpoint}):`, error);
 
     const errorMessage =
-      error?.data?.message || "An unexpected error occurred.";
+      error?.dataRes?.message || "An unexpected error occurred.";
     return { error: errorMessage };
   }
 }

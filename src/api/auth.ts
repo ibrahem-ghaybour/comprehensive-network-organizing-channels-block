@@ -8,11 +8,14 @@ export const useAuthApi = () => {
         endpoint: "auth/login",
         method: "POST",
         body: { email, password },
-        requireAuth: false,
       }),
     logout: async () =>
       await apiRequest<void>({ endpoint: "auth/logout", method: "POST" }),
     getProfile: async () =>
-      await apiRequest<User>({ endpoint: "auth/profile", method: "GET" }),
+      await apiRequest<User>({
+        endpoint: "auth/profile",
+        method: "GET",
+        requireAuth: true,
+      }),
   };
 };

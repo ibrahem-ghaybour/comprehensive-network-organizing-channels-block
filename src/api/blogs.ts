@@ -14,16 +14,22 @@ export function useBlogsApi() {
         endpoint: "blogs",
         method: "GET",
         params,
+        requireAuth: true,
       }),
 
     fetchBlogById: async (id: string) =>
-      await apiRequest<Blog>({ endpoint: `blogs/${id}`, method: "GET" }),
+      await apiRequest<Blog>({
+        endpoint: `blogs/${id}`,
+        method: "GET",
+        requireAuth: true,
+      }),
 
     createBlog: async (data: CreateBlogRequest) =>
       await apiRequest<Blog>({
         endpoint: "channels",
         method: "POST",
         body: data,
+        requireAuth: true,
       }),
 
     updateBlog: async (id: string, data: UpdateBlogRequest) =>
@@ -31,9 +37,14 @@ export function useBlogsApi() {
         endpoint: `blogs/${id}`,
         method: "PATCH",
         body: data,
+        requireAuth: true,
       }),
 
     deleteBlog: async (id: string) =>
-      await apiRequest<void>({ endpoint: `blogs/${id}`, method: "DELETE" }),
+      await apiRequest<void>({
+        endpoint: `blogs/${id}`,
+        method: "DELETE",
+        requireAuth: true,
+      }),
   };
 }

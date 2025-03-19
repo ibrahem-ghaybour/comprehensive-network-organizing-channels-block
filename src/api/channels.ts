@@ -14,6 +14,7 @@ export function useChannelsApi() {
         endpoint: "groups",
         method: "GET",
         params,
+        requireAuth: true,
       }),
 
     fetchChannelById: async (id: string) =>
@@ -24,6 +25,7 @@ export function useChannelsApi() {
         endpoint: "channels",
         method: "POST",
         body: data,
+        requireAuth: true,
       }),
 
     updateChannel: async (id: string, data: UpdateChannelRequest) =>
@@ -31,9 +33,14 @@ export function useChannelsApi() {
         endpoint: `groups/${id}`,
         method: "PATCH",
         body: data,
+        requireAuth: true,
       }),
 
     deleteChannel: async (id: string) =>
-      await apiRequest<void>({ endpoint: `groups/${id}`, method: "DELETE" }),
+      await apiRequest<void>({
+        endpoint: `groups/${id}`,
+        method: "DELETE",
+        requireAuth: true,
+      }),
   };
 }

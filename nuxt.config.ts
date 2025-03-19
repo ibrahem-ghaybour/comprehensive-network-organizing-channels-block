@@ -3,10 +3,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: "src/",
   css: ["~/assets/css/main.css"],
-
   // Add Pinia for state management and Tailwind CSS
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss"],
-
+  modules: ["@nuxtjs/tailwindcss"],
+  // pinia: {
+  //   autoImports: ["defineStore", "acceptHMRUpdate"],
+  // },
   // Configure plugins
   plugins: ["~/plugins/index.ts", "~/plugins/directives.ts"],
 

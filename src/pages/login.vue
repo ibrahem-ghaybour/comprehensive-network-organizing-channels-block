@@ -161,22 +161,22 @@ onMounted(async () => {
 
 // Handle login form submission
 async function handleLogin() {
-  // if (isLoading.value) return;
-  const { error, data } = await useAuthApi().login(email.value, password.value);
-  console.log(error, data);
+  if (isLoading.value) return;
+  const { error, dataRes } = await useAuthApi().login(email.value, password.value);
+  console.log(error, dataRes);
 
-  // // error.value = "";
-  // sessionExpired.value = false;
-  // isLoading.value = true;
+  // error.value = "";
+  sessionExpired.value = false;
+  isLoading.value = true;
 
-  // try {
-  //   await authStore.login(email.value, password.value);
-  //   router.push(redirectPath.value);
-  // } catch (err: any) {
-  //   // error.value = err.message || $i18n.t("auth.loginError");
-  // } finally {
-  //   isLoading.value = false;
-  // }
+  try {
+    await authStore.login(email.value, password.value);
+    router.push(redirectPath.value);
+  } catch (err: any) {
+    // error.value = err.message || $i18n.t("auth.loginError");
+  } finally {
+    isLoading.value = false;
+  }
 }
 
 // Login as a predefined user
