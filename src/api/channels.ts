@@ -1,25 +1,39 @@
+import { apiRequest } from "~/api/request";
+import type { ChannelFilters } from "~/types/channel";
+import type {
+  Channel,
+  CreateChannelRequest,
+  PaginatedResponse,
+  UpdateChannelRequest,
+} from "~/types/channel";
 
-const API_BASE = useRuntimeConfig().public.API_BASE; // Centralize base URL
+export function useChannelsApi() {
+  return {
+    fetchChannels: async (params: ChannelFilters) =>
+      await apiRequest<PaginatedResponse<Channel>>({
+        endpoint: "groups",
+        method: "GET",
+        params,
+      }),
 
-export const fetchChannels = () => {
-  return $fetch(`${API_BASE}/channels`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      
-    }
-  );
-};
+    fetchChannelById: async (id: string) =>
+      await apiRequest<Channel>({ endpoint: `groups/${id}`, method: "GET" }),
 
-export const fetchChannelById = (id: string) => {
-  return $fetch(`${API_BASE}/channels/${id}`);
-};
+    createChannel: async (data: CreateChannelRequest) =>
+      await apiRequest<Channel>({
+        endpoint: "channels",
+        method: "POST",
+        body: data,
+      }),
 
-export const createChannel = (data: any) => {
-  return $fetch(`${API_BASE}/channels`, {
-    method: "POST",
-    body: data,
-  });
-};
+    updateChannel: async (id: string, data: UpdateChannelRequest) =>
+      await apiRequest<Channel>({
+        endpoint: `groups/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+
+    deleteChannel: async (id: string) =>
+      await apiRequest<void>({ endpoint: `groups/${id}`, method: "DELETE" }),
+  };
+}

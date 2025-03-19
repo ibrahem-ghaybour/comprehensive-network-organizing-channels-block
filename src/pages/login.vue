@@ -116,16 +116,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
 import { useAuthStore } from "~/store/auth";
-import { useI18n } from "vue-i18n";
-
+import { useAuthApi } from "~/api/auth";
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 const { $i18n } = useNuxtApp();
-
 // Form state
 const email = ref("");
 const password = ref("");
@@ -136,7 +132,7 @@ const sessionExpired = ref(false);
 const redirectPath = ref("/");
 
 // Check for query parameters on mount
-onMounted(() => {
+onMounted(async () => {
   // Check if session expired
   if (route.query.expired === "true") {
     sessionExpired.value = true;
@@ -165,20 +161,22 @@ onMounted(() => {
 
 // Handle login form submission
 async function handleLogin() {
-  if (isLoading.value) return;
+  // if (isLoading.value) return;
+  const { error, data } = await useAuthApi().login(email.value, password.value);
+  console.log(error, data);
 
-  error.value = "";
-  sessionExpired.value = false;
-  isLoading.value = true;
+  // // error.value = "";
+  // sessionExpired.value = false;
+  // isLoading.value = true;
 
-  try {
-    await authStore.login(email.value, password.value);
-    router.push(redirectPath.value);
-  } catch (err: any) {
-    error.value = err.message || $i18n.t("auth.loginError");
-  } finally {
-    isLoading.value = false;
-  }
+  // try {
+  //   await authStore.login(email.value, password.value);
+  //   router.push(redirectPath.value);
+  // } catch (err: any) {
+  //   // error.value = err.message || $i18n.t("auth.loginError");
+  // } finally {
+  //   isLoading.value = false;
+  // }
 }
 
 // Login as a predefined user
