@@ -1,92 +1,47 @@
 <template>
-  <div class="container mx-auto">
-    <h2>{{ $t("dashboard.title") }}</h2>
-    <div v-if="isLoading" class="loading-indicator">
-      <UiLoading />
-    </div>
-    <div v-else-if="error" class="error-message">{}
-      <p class="!text-white pb-2">{{ error }}</p>
-      <button @click="fetchStats" class="btn btn-primary">Retry</button>
-    </div>
-    <div v-else class="dashboard-summary">
-      <div class="summary-card">
-        <h3>{{ $t("users.totalUsers") }}</h3>
-        <p class="summary-number">{{ stats.totalUsers }}</p>
-      </div>
-      <div class="summary-card">
-        <h3>{{ $t("users.activeUsers") }}</h3>
-        <p class="summary-number">{{ stats.activeUsers }}</p>
-      </div>
-      <div class="summary-card">
-        <h3>{{ $t("users.adminUsers") }}</h3>
-        <p class="summary-number">{{ stats.adminUsers }}</p>
-      </div>
-    </div>
-    <div class="dashboard-actions">
-      <NuxtLink to="/users" class="btn btn-primary">{{
-        $t("users.manageUsers")
-      }}</NuxtLink>
-    </div>
-  </div>
+  <v-container>
+    <v-expansion-panels multiple v-model="activePanels">
+      <v-expansion-panel v-for="(item, index) in items" :key="index">
+        <v-expansion-panel-title>
+          <v-icon
+            left
+            :icon="
+              activePanels.includes(index)
+                ? 'mdi-chevron-down'
+                : 'mdi-chevron-right'
+            "
+          ></v-icon>
+          {{ item.title }}
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          {{ item.content }}
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </v-container>
 </template>
 
 <script setup>
-import { useDashboardStats } from "~/composables/useDashboardStats";
-import { useAuthStore } from "~/stores/auth";
-// Get dashboard statistics
-const { stats, isLoading, error, fetchStats } = useDashboardStats();
-const authStore = useAuthStore();
-// Fetch statistics when component is mounted
-onMounted(() => {
-  fetchStats();
-});
+import { ref } from "vue";
+
+
+const items = ref([
+  {
+    title: "🔥 Best Collapse Combo",
+    content: "This is an optimized expandable panel with animation and icons.",
+  },
+  {
+    title: "💡 Supports Multiple Panels",
+    content: "You can open multiple panels at the same time.",
+  },
+  {
+    title: "🚀 Smooth & Dynamic",
+    content: "The best user experience with animations and states.",
+  },
+]);
+
+const activePanels = ref([]); // Track active panels manager123Q#@Adff//
+
 </script>
 
-<style scoped>
-.dashboard-summary {
-  display: grid;
-  justify-content: center;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
-  margin: 2rem 0;
-}
-
-.summary-card {
-  @apply bg-background-card rounded-lg shadow border border-border p-6;
-}
-
-.summary-number {
-  @apply text-4xl font-bold text-primary my-2;
-}
-
-.dashboard-actions {
-  @apply mt-8;
-}
-
-.loading-indicator {
-  @apply text-center py-8 text-gray-medium;
-}
-
-.error-message {
-  @apply bg-danger bg-opacity-10 text-danger p-4 rounded-lg my-4;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-}
-
-.btn-primary:hover {
-  background-color: var(--secondary-color);
-}
-</style>
+<style scoped></style>

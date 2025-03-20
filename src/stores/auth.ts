@@ -3,6 +3,7 @@ import { useAuthApi } from "@/api/auth"; // Import API
 import type { User } from "~/types/auth";
 
 export const useAuthStore = defineStore("auth_store", () => {
+  if (import.meta.server) return; // Prevent SSR
   const { login, getProfile, updateProfile, signup } = useAuthApi();
   // state
   const currentUser: Ref<User | null> = ref(null);

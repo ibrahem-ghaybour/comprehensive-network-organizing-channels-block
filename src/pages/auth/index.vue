@@ -1,17 +1,23 @@
 <template>
   <ClientOnly>
-    <div
-      class="min-h-screen flex items-center justify-center p-8 bg-background"
-    >
+    <div class="min-h-screen flex items-center justify-center p-8">
       <div class="w-full max-w-md bg-background-card rounded-lg shadow-md p-8">
-        <div class="text-center mb-8 ">
-          <h1 class="text-3xl font-bold text-center mb-2">{{route.query.signup ? $t("auth.signup") : $t("auth.login") }}</h1>
-          <p class="text-text opacity-80">{{ route.query.signup ? $t("auth.signupSubtitle") : $t("auth.loginSubtitle") }}</p>
+        <div class="text-center mb-8">
+          <h1 class="text-3xl font-bold text-center mb-2">
+            {{ route.query.signup ? $t("auth.signup") : $t("auth.login") }}
+          </h1>
+          <p class="text-text opacity-80">
+            {{
+              route.query.signup
+                ? $t("auth.signupSubtitle")
+                : $t("auth.loginSubtitle")
+            }}
+          </p>
         </div>
         <!-- <h1 class="text-3xl font-bold text-white text-center mb-2">
         Create an Account
       </h1> -->
-      <!-- <p class="text-[#B5BAC1] text-center mb-8">Join our community today</p> -->
+        <!-- <p class="text-[#B5BAC1] text-center mb-8">Join our community today</p> -->
         <div class="min-h-14">
           <div
             v-if="authStore.error"

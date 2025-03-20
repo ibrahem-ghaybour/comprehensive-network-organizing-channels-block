@@ -28,7 +28,7 @@
       :type-input="passwordType"
     >
       <span
-        class="absolute text-primary right-0 mt-1 me-2 cursor-pointer"
+        class="absolute !text-primary right-0 mt-1 me-2 cursor-pointer"
         @click="
           passwordType = passwordType === 'password' ? 'text' : 'password'
         "
@@ -55,7 +55,7 @@
       :type-input="passwordType"
     >
       <span
-        class="absolute text-primary right-0 mt-1 me-2 cursor-pointer"
+        class="absolute !text-primary right-0 mt-1 me-2 cursor-pointer"
         @click="
           passwordType = passwordType === 'password' ? 'text' : 'password'
         "

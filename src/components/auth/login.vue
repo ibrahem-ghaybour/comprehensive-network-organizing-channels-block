@@ -8,7 +8,7 @@
     >
       <span
         v-if="email"
-        :class="[formatEmail.valid ? 'text-primary' : 'text-danger', 'text-sm']"
+        :class="[formatEmail.valid ? '!text-primary' : 'text-danger', 'text-sm']"
       >
         {{ formatEmail.message }}
       </span>
@@ -21,7 +21,7 @@
       :forId="'passwordLogin'"
     >
       <span
-        class="absolute text-primary right-0 mt-1 me-2 cursor-pointer"
+        class="absolute !text-primary right-0 mt-1 me-2 cursor-pointer"
         @click="
           passwordType = passwordType === 'password' ? 'text' : 'password'
         "
@@ -33,7 +33,7 @@
       <span
         v-if="password"
         :class="[
-          formatPassword.valid ? 'text-primary' : 'text-danger',
+          formatPassword.valid ? '!text-primary' : 'text-danger',
           'text-sm',
         ]"
       >

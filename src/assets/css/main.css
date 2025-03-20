@@ -46,9 +46,9 @@
     --card-background: #313338; /* Graphite Black */
     --border-color: #2c2f33; /* Subtle Dark Gray */
 
-    --light-gray: #3a3b3c; /* Muted Charcoal */
+    --light-gray: #35373c; /* Muted Charcoal */
     --medium-gray: #4e4f50; /* Refined Graphite */
-    --dark-gray: #1e1f22;; /* Smoky Gray */
+    --dark-gray: #1e1f22; /* Smoky Gray */
 
     --danger-color: #f97777eb; /* Vibrant Crimson */
     --success-color: #2ecc71; /* Radiant Green */
@@ -130,5 +130,20 @@
   /* Skip to content link for accessibility */
   .skip-link {
     @apply sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white;
+  }
+  * {
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 20px 0px;
+    }
   }
 }

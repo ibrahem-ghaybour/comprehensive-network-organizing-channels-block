@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { useChannelsApi } from "@/api/channels";
 import type { Channel, ChannelFilters } from "~/types/channel";
 
-export const useChannelStore = defineStore("channels", {
+export const useChannelStore = defineStore("chanssnels", {
   state: () => ({
     channels: [] as Channel[],
     channel: null as Channel | null,

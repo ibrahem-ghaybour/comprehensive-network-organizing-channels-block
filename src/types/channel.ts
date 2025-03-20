@@ -11,9 +11,6 @@
 // updated_at
 // 2025-03-11T10:46:49.733+00:00
 // Channel status types
-
-import type { N } from "vitest/dist/reporters-w_64AS5f.js";
-
 // Sort direction type
 export type SortDirection = "asc" | "desc";
 
@@ -41,7 +38,10 @@ export interface Pagination {
 // Paginated response interface
 export interface PaginatedResponse<T> {
   data: T[];
-  pagination: Pagination;
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
 }
 
 // channel filters interface
