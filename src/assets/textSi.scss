@@ -1,0 +1,64 @@
+.ql-editor {
+  position: relative;
+  font-size: 16px;
+  h1 {
+    font-size: 2em;
+  }
+  h2 {
+    font-size: 1.5em;
+  }
+  ol {
+    list-style-type: decimal;
+  }
+  ul {
+    list-style-type: disc;
+  }
+  li {
+    font-size: 16px;
+    span {
+      font-size: 16px;
+    }
+  }
+  .ql-blank::before {
+    color: #888;
+  }
+}
+
+// .content-container a {
+//   color: #3498db;
+//   text-decoration: underline;
+// }
+
+// .content-container a:hover {
+//   color: #2980b9;
+// }
+// // #2B2D31
+// :root {
+//   --sidebar: #2b2d31;
+//   --primary: #313338;
+//   --primaryText: #dbdee1;
+//   --input: #1e1f22;
+//   --blog: #393c41;
+// }
+// * {
+//   &::-webkit-scrollbar {
+//     width: 8px;
+//   }
+
+//   &::-webkit-scrollbar-thumb {
+//     background-color: rgba(255, 255, 255, 0.2);
+//     border-radius: 6px;
+//   }
+
+//   &::-webkit-scrollbar-track {
+//     background: transparent;
+//     margin:20px 0px;
+//   }
+// }
+// body {
+//   @apply text-primaryText bg-sidebar;
+//   input,
+//   textarea {
+//     @apply bg-input outline-none py-2 px-3;
+//   }
+// }

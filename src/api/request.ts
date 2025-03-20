@@ -1,3 +1,47 @@
+// interface Props {
+//   endpoint: string;
+//   method: "GET" | "POST" | "PATCH" | "DELETE";
+//   params?: Record<string, any>;
+//   body?: any;
+//   requireAuth?: boolean;
+// }
+
+// export async function apiRequest<T>({
+//   endpoint,
+//   method,
+//   params,
+//   body,
+//   requireAuth = false,
+// }: Props): Promise<{ res?: T; error?: string }> {
+//   try {
+//     const authToken = useCookie("auth_token");
+//     const config = useRuntimeConfig();
+//     const API_BASE = config.public.API_BASE;
+
+//     if (requireAuth && !authToken.value) {
+//       return { error: "Authorization token is missing!" };
+//     }
+//     const response = await $fetch<T>(`${API_BASE}/${endpoint}`, {
+//       method,
+//       params,
+//       headers: {
+//         "Content-Type": "application/json",
+//         ...(requireAuth && authToken.value
+//           ? { Authorization: `Bearer ${authToken.value}` }
+//           : {}),
+//       },
+//       body: body,
+//     });
+
+//     return { res: response };
+//   } catch (error: any) {
+//     console.error(`Error in API request (${method} ${endpoint}):`, error);
+
+//     const errorMessage =
+//       error?.dataRes?.message || "An unexpected error occurred.";
+//     return { error: errorMessage };
+//   }
+// }
 interface Props {
   endpoint: string;
   method: "GET" | "POST" | "PATCH" | "DELETE";
@@ -9,35 +53,37 @@ interface Props {
 export async function apiRequest<T>({
   endpoint,
   method,
-  params: params = { page: 1, sizePage: 10 },
+  params,
   body,
   requireAuth = false,
-}: Props): Promise<{ dataRes?: T; error?: string }> {
+}: Props): Promise<{ res?: T; error?: string }> {
   try {
+    const authToken = useCookie("auth_token");
     const config = useRuntimeConfig();
     const API_BASE = config.public.API_BASE;
 
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2QzMjNhNmMyOWU4YTBjZTJiMzI3OTUiLCJlbWFpbCI6ImdoYWlib3VyZ0BnbWFpbC5jb20iLCJuYW1lIjoiaWJyYWhpbSIsImlhdCI6MTc0MjM4NzM2OSwiZXhwIjoxNzQyMzkwOTY5fQ.6GOUhkeLP0s0ggIlGAtKEqz8hGR1n-nq-QgIbs7aXBE";
-    if (requireAuth && !token) {
+    if (requireAuth && !authToken.value) {
       return { error: "Authorization token is missing!" };
     }
+
     const response = await $fetch<T>(`${API_BASE}/${endpoint}`, {
       method,
       params,
       headers: {
         "Content-Type": "application/json",
-        ...(requireAuth && token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(requireAuth && authToken.value
+          ? { Authorization: `Bearer ${authToken.value}` }
+          : {}),
       },
-      body: body,
+      ...(body ? { body } : {}), // Only include body if provided
     });
 
-    return { dataRes: response };
+    return { res: response };
   } catch (error: any) {
     console.error(`Error in API request (${method} ${endpoint}):`, error);
 
     const errorMessage =
-      error?.dataRes?.message || "An unexpected error occurred.";
+      error?.data?.message || "An unexpected error occurred.";
     return { error: errorMessage };
   }
 }

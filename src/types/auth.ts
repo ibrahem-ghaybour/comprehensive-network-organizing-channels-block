@@ -4,10 +4,8 @@ export interface User {
   _id: string;
 }
 export interface authResponse {
-  data: {
-    massage: string;
-    token: string;
-    user: User;
-  };
-  error: string;
+  message?: string;
+  token?: string;
+  user?: User;
+  error?: string;
 }

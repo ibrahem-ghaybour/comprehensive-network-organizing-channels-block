@@ -76,7 +76,15 @@
     "unauthorized": "Unauthorized Access",
     "unauthorizedMessage": "You don't have permission to access this page.",
     "goBack": "Go Back",
-    "goToDashboard": "Go to Dashboard"
+    "goToDashboard": "Go to Dashboard",
+    "passwordLenght": "Password must be at least 8 characters long.",
+    "passwordUppercase": "Password must contain at least one uppercase letter.",
+    "passwordLowercase": "Password must contain at least one lowercase letter.",
+    "passwordDigit": "Password must contain at least one number.",
+    "passwordSpecialChar": "Password must contain at least one special character.",
+    "passwordValid": "Password is valid",
+    "emailInvalid": "Please enter a valid email address",
+    "emailValid": "Email is valid"
   },
   "users": {
     "title": "Users",

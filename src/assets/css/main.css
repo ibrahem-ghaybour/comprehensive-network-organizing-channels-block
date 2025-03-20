@@ -4,60 +4,67 @@
 @tailwind utilities;
 
 @layer base {
+  /* //   --sidebar: #2b2d31;
+//   --primary: #313338;
+//   --primaryText: #dbdee1;
+//   --input: #1e1f22;
+//   --blog: #393c41;*/
   :root {
-    --primary-color: #16A085;          /* Elegant Jade Green */
-    --primary-light-color: #1ABC9C;    /* Soft Turquoise */
-    --primary-dark-color: #0E7C67;     /* Deep Teal */
-    
-    --secondary-color: #2980B9;        /* Royal Blue */
-    
-    --text-color: #2C3E50;             /* Rich Midnight Blue */
-    --heading-color: #1A252F;          /* Charcoal Navy */
-    
-    --background-color: #F8F9FA;       /* Soft Cloud White */
-    --card-background: #FFFFFF;        /* Crisp White */
-    --border-color: #DADFE1;           /* Gentle Gray Border */
-    
-    --light-gray: #ECF0F1;             /* Silky Silver */
-    --medium-gray: #BDC3C7;            /* Warm Gray */
-    --dark-gray: #7F8C8D;              /* Urban Slate */
-    
-    --danger-color: #f86454f0;           /* Striking Red Coral */
-    --success-color: #27AE60;          /* Vibrant Emerald Green */
-    --warning-color: #F39C12;          /* Golden Amber */
-}
-  
-/* Dark theme */
-.dark-theme {
-    --primary-color: #0D6EFD;          /* Bold Royal Blue */
-    --primary-light-color: #5B9BFF;    /* Soft Azure */
-    --primary-dark-color: #0546A0;     /* Deep Sapphire */
-    
-    --secondary-color: #8E44AD;        /* Majestic Purple */
-    
-    --text-color: #ECF0F1;             /* Soft White */
-    --heading-color: #FFFFFF;          /* Bright Pure White */
-    
-    --background-color: #18191A;       /* Rich Jet Black */
-    --card-background: #212529;        /* Graphite Black */
-    --border-color: #2C2F33;           /* Subtle Dark Gray */
-    
-    --light-gray: #3A3B3C;             /* Muted Charcoal */
-    --medium-gray: #4E4F50;            /* Refined Graphite */
-    --dark-gray: #626567;              /* Smoky Gray */
-    
-    --danger-color: #f97777eb;           /* Vibrant Crimson */
-    --success-color: #2ECC71;          /* Radiant Green */
-    --warning-color: #FFB74D;          /* Soft Sunset Orange */
-}
+    --primary-color: #16a085; /* Elegant Jade Green */
+    --primary-light-color: #46c8ae; /* Soft Turquoise */
+    --primary-dark-color: #0e7c67; /* Deep Teal */
+    --secondary-color: #248046cc; /* Royal Blue */
 
-  
+    --text-color: #2c3e50; /* Rich Midnight Blue */
+    --heading-color: #1a252f; /* Charcoal Navy */
+
+    --background-color: #f8f9fa; /* Soft Cloud White */
+    --card-background: #ffffff; /* Crisp White */
+    --border-color: #dadfe1; /* Gentle Gray Border */
+
+    --light-gray: #ecf0f1; /* Silky Silver */
+    --medium-gray: #bdc3c7; /* Warm Gray */
+    --dark-gray: #ecf0f1; /* Urban Slate */
+
+    --danger-color: #f86454f0; /* Striking Red Coral */
+    --success-color: #27ae60; /* Vibrant Emerald Green */
+    --warning-color: #f39c12; /* Golden Amber */
+  }
+
+  /* Dark theme */
+  .dark-theme {
+    --primary-color: #5865f2; /* Bold Royal Blue */
+    --primary-light-color: #5b9bff; /* Soft Azure */
+    --primary-dark-color: #0546a0; /* Deep Sapphire */
+
+    --secondary-color: #5865f2; /* Majestic Purple */
+
+    --text-color: #dbdee1; /* Soft White */
+    --heading-color: #ffffff; /* Bright Pure White */
+
+    --background-color: #1e1f22; /* Rich Jet Black */
+    --card-background: #313338; /* Graphite Black */
+    --border-color: #2c2f33; /* Subtle Dark Gray */
+
+    --light-gray: #3a3b3c; /* Muted Charcoal */
+    --medium-gray: #4e4f50; /* Refined Graphite */
+    --dark-gray: #1e1f22;; /* Smoky Gray */
+
+    --danger-color: #f97777eb; /* Vibrant Crimson */
+    --success-color: #2ecc71; /* Radiant Green */
+    --warning-color: #ffb74d; /* Soft Sunset Orange */
+  }
 
   body {
     @apply font-sans text-text bg-background transition-colors duration-300;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply text-text-heading font-semibold;
   }
 
@@ -66,8 +73,12 @@
   }
 
   /* Focus styles for accessibility */
-  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-    @apply outline-none ring-2 ring-primary ring-offset-2;
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply outline-none ring-1 ring-primary ring-offset-0;
   }
 }
 

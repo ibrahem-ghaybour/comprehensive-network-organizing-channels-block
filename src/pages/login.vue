@@ -20,57 +20,9 @@
           {{ $t("auth.sessionExpired") }}
         </div>
 
-        <form @submit.prevent="handleLogin" class="space-y-6">
-          <div class="space-y-2">
-            <label for="email" class="block text-sm font-medium">{{
-              $t("auth.email")
-            }}</label>
-            <input
-              type="email"
-              id="email"
-              v-model="email"
-              class="form-control"
-              :placeholder="$t('auth.emailPlaceholder')"
-              required
-              v-focus
-            />
-          </div>
+        <AuthLogin></AuthLogin>
 
-          <div class="space-y-2">
-            <label for="password" class="block text-sm font-medium">{{
-              $t("auth.password")
-            }}</label>
-            <input
-              type="password"
-              id="password"
-              v-model="password"
-              class="form-control"
-              :placeholder="$t('auth.passwordPlaceholder')"
-              required
-            />
-          </div>
-
-          <div class="flex items-center">
-            <label class="flex items-center cursor-pointer select-none">
-              <input
-                type="checkbox"
-                v-model="rememberMe"
-                class="mr-2 h-4 w-4"
-              />
-              <span>{{ $t("auth.rememberMe") }}</span>
-            </label>
-          </div>
-
-          <button
-            type="submit"
-            class="btn btn-primary w-full"
-            :disabled="isLoading"
-          >
-            {{ isLoading ? $t("common.loading") : $t("auth.login") }}
-          </button>
-        </form>
-
-        <div class="mt-8 pt-6 border-t border-border">
+        <!-- <div class="mt-8 pt-6 border-t border-border">
           <h3 class="text-lg font-semibold mb-2">{{ $t("auth.demoUsers") }}</h3>
           <p class="text-text opacity-80 mb-4">
             {{ $t("auth.demoUsersDescription") }}
@@ -109,7 +61,7 @@
               {{ $t("auth.loginAsGuest") }}
             </button>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </ClientOnly>
@@ -130,7 +82,6 @@ const isLoading = ref(false);
 const rememberMe = ref(false);
 const sessionExpired = ref(false);
 const redirectPath = ref("/");
-
 // Check for query parameters on mount
 onMounted(async () => {
   // Check if session expired

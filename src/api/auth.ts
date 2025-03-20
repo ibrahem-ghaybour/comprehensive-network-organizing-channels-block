@@ -10,7 +10,10 @@ export const useAuthApi = () => {
         body: { email, password },
       }),
     logout: async () =>
-      await apiRequest<void>({ endpoint: "auth/logout", method: "POST" }),
+      await apiRequest<authResponse>({
+        endpoint: "auth/logout",
+        method: "POST",
+      }),
     getProfile: async () =>
       await apiRequest<User>({
         endpoint: "auth/profile",

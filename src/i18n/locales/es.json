@@ -76,7 +76,15 @@
     "unauthorized": "Acceso no autorizado",
     "unauthorizedMessage": "No tiene permiso para acceder a esta página.",
     "goBack": "Volver",
-    "goToDashboard": "Ir al panel"
+    "goToDashboard": "Ir al panel",
+    "passwordLenght": "La contraseña debe tener al menos 8 caracteres.",
+    "passwordUppercase": "La contraseña debe contener al menos una letra mayúscula.",
+    "passwordLowercase": "La contraseña debe contener al menos una letra minúscula.",
+    "passwordDigit": "La contraseña debe contener al menos un número.",
+    "passwordSpecialChar": "La contraseña debe contener al menos un caracter especial.",
+    "passwordValid": "La contraseña es válida",
+    "emailInvalid": "Por favor, introduzca una dirección de correo electrónico válida",
+    "emailValid": "El correo electrónico es válido"
   },
   "users": {
     "title": "Usuarios",

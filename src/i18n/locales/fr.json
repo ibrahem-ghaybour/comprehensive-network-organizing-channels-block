@@ -77,7 +77,15 @@
     "unauthorized": "Accès non autorisé",
     "unauthorizedMessage": "Vous n'avez pas la permission d'accéder à cette page.",
     "goBack": "Retour",
-    "goToDashboard": "Aller au tableau de bord"
+    "goToDashboard": "Aller au tableau de bord",
+    "passwordLenght": "Le mot de passe doit comporter au moins 8 caractères.",
+    "passwordUppercase": "Le mot de passe doit contenir au moins une lettre majuscule.",
+    "passwordLowercase": "Le mot de passe doit contenir au moins une lettre minuscule.",
+    "passwordDigit": "Le mot de passe doit contenir au moins un chiffre.",
+    "passwordSpecialChar": "Le mot de passe doit contenir au moins un caractère spécial.",
+    "passwordValid": "Le mot de passe est valide",
+    "emailInvalid": "Veuillez entrer une adresse e-mail valide",
+    "emailValid": "L'e-mail est valide"
   },
   "users": {
     "title": "Utilisateurs",
