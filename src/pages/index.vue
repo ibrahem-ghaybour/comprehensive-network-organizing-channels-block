@@ -4,7 +4,7 @@
     <div v-if="isLoading" class="loading-indicator">
       <UiLoading />
     </div>
-    <div v-else-if="error" class="error-message">
+    <div v-else-if="error" class="error-message">{}
       <p class="!text-white pb-2">{{ error }}</p>
       <button @click="fetchStats" class="btn btn-primary">Retry</button>
     </div>
@@ -32,10 +32,10 @@
 
 <script setup>
 import { useDashboardStats } from "~/composables/useDashboardStats";
-
+import { useAuthStore } from "~/stores/auth";
 // Get dashboard statistics
 const { stats, isLoading, error, fetchStats } = useDashboardStats();
-
+const authStore = useAuthStore();
 // Fetch statistics when component is mounted
 onMounted(() => {
   fetchStats();

@@ -1,10 +1,5 @@
 <template>
   <form @submit.prevent="handleLogin" class="space-y-6">
-    <div class="h-7">
-      <p class="text-primary">{{ authStore.message }}</p>
-      <p class="text-danger">{{ authStore.error }}</p>
-    </div>
-
     <UiInput
       v-model="email"
       :type-input="'email'"
@@ -27,9 +22,13 @@
     >
       <span
         class="absolute text-primary right-0 mt-1 me-2 cursor-pointer"
-        @click="passwordType = passwordType === 'password' ? 'text' : 'password'"
+        @click="
+          passwordType = passwordType === 'password' ? 'text' : 'password'
+        "
       >
-        <font-awesome-icon :icon="['fas',passwordType === 'password' ? 'eye-slash' : 'eye']" />
+        <font-awesome-icon
+          :icon="['fas', passwordType === 'password' ? 'eye-slash' : 'eye']"
+        />
       </span>
       <span
         v-if="password"
@@ -74,7 +73,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useAuthStore } from "@/stores/auth";
-library.add(faEye,faEyeSlash);
+library.add(faEye, faEyeSlash);
 const authStore = useAuthStore();
 const rememberMe = ref(false);
 const email = ref("");
@@ -83,10 +82,14 @@ const passwordType = ref("password");
 const formatEmail = computed(() => validateEmail(email.value.trim()));
 const formatPassword = computed(() => validatePassword(password.value.trim()));
 
+
 const handleLogin = async () => {
   if (authStore.isLoading) return;
-  // if (!formatEmail.value.valid || !formatPassword.value.valid) return;
+  if (!formatEmail.value.valid || !formatPassword.value.valid) return;
   await authStore.authLogin(email.value, password.value);
+  if (authStore.isAuthenticated) {
+    await navigateTo("/");
+  }
 };
 </script>
 

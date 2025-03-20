@@ -3,7 +3,7 @@ import { useAuthApi } from "@/api/auth"; // Import API
 import type { User } from "~/types/auth";
 
 export const useAuthStore = defineStore("auth_store", () => {
-  const { login, logout, getProfile } = useAuthApi();
+  const { login, getProfile, updateProfile, signup } = useAuthApi();
   // state
   const currentUser: Ref<User | null> = ref(null);
   const isAuthenticated = ref(false);
@@ -51,21 +51,56 @@ export const useAuthStore = defineStore("auth_store", () => {
     }
   }
   async function authLogout() {
-    const auth_token = useCookie("auth_token");
-    isLoading.value = true;
-    error.value = null;
     try {
-      const { res: dataRes, error } = await logout();
-      if (error) throw new Error(error || "An unknown error occurred");
-      auth_token.value = null;
+      const auth_token = useCookie("auth_token");
+      if (!auth_token) {
+        throw new Error("No auth token found");
+      }
+      // Clear authentication-related values
+      auth_token.value = ""; // Clear cookie properly
       currentUser.value = null;
       isAuthenticated.value = false;
-      message.value = dataRes.message;
+    } catch (err) {
+      error.value = err.message || "An error occurred during logout";
+    }
+  }
+
+  async function authUpdateProfile(userData: User) {
+    isLoading.value = true;
+    error.value = null;
+    const auth_token = useCookie("auth_token");
+    try {
+      const { error, res: dataUserRes } = await updateProfile(userData);
+      if (error) throw new Error(error || "An unknown error occurred");
+      auth_token.value = dataUserRes.token;
+      currentUser.value = dataUserRes.user;
+      isAuthenticated.value = true;
+      message.value = dataUserRes.message;
     } catch (err) {
       error.value = err.message || "An error occurred";
     } finally {
       isLoading.value = false;
     }
+  }
+  async function authSignup(userData: User) {
+    isLoading.value = true;
+    error.value = null;
+    const auth_token = useCookie("auth_token");
+    try {
+      const { error, res: dataUserRes } = await signup(userData);
+      if (error) throw new Error(error || "An unknown error occurred");
+      auth_token.value = dataUserRes.token;
+      currentUser.value = dataUserRes.user;
+      isAuthenticated.value = true;
+      message.value = dataUserRes.message;
+    } catch (err) {
+      error.value = err.message || "An error occurred";
+    } finally {
+      isLoading.value = false;
+    }
+  }
+  if (import.meta.client) {
+    initFormStorage();
   }
   return {
     currentUser,
@@ -75,6 +110,8 @@ export const useAuthStore = defineStore("auth_store", () => {
     message,
     initFormStorage,
     authLogin,
+    authUpdateProfile,
     authLogout,
+    authSignup,
   };
 });

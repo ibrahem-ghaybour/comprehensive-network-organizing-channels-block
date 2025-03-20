@@ -84,7 +84,12 @@
     "passwordSpecialChar": "La contraseña debe contener al menos un caracter especial.",
     "passwordValid": "La contraseña es válida",
     "emailInvalid": "Por favor, introduzca una dirección de correo electrónico válida",
-    "emailValid": "El correo electrónico es válido"
+    "emailValid": "El correo electrónico es válido",
+    "signup":"Registrarse",
+    "dontHaveAccount":"¿No tienes una cuenta?",
+    "signupSubtitle": "Regístrate para obtener una nueva cuenta",
+    "passwordMatch": "Las contraseñas no coinciden",
+    "passwordMismatch": "Las contraseñas no coinciden"
   },
   "users": {
     "title": "Usuarios",

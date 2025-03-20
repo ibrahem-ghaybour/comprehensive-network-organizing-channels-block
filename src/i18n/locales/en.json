@@ -84,7 +84,12 @@
     "passwordSpecialChar": "Password must contain at least one special character.",
     "passwordValid": "Password is valid",
     "emailInvalid": "Please enter a valid email address",
-    "emailValid": "Email is valid"
+    "emailValid": "Email is valid",
+    "signup":"Sign Up",
+    "dontHaveAccount":"Don't have an account?",
+    "signupSubtitle": "Sign up for a new account",
+    "passwordMatch": "Passwords do not match",
+    "passwordNotMatch": "Passwords match"
   },
   "users": {
     "title": "Users",

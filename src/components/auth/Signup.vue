@@ -1,67 +1,126 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center p-4">
-    <div class="bg-primary p-8 rounded-md shadow-lg w-full max-w-md">
-      <h1 class="text-3xl font-bold text-white text-center mb-2">
-        Create an Account
-      </h1>
-      <p class="text-[#B5BAC1] text-center mb-8">Join our community today</p>
+  <form @submit.prevent="handleLogin" class="space-y-6">
+    <UiInput
+      v-model="name"
+      :for-id="'usernamecreateUser'"
+      :label="'Username'"
+      :forId="'usernameNewUser'"
+    />
+    <UiInput
+      v-model="email"
+      :for-id="'emailcreateUser'"
+      :label="'Email'"
+      :forId="'emailNewUser'"
+      :type-input="'email'"
+    >
+      <span
+        v-if="email"
+        :class="[formatEmail.valid ? 'text-primary' : 'text-danger', 'text-sm']"
+      >
+        {{ formatEmail.message }}
+      </span>
+    </UiInput>
+    <UiInput
+      v-model="password"
+      :for-id="'passwordcreateUser'"
+      :label="'Password'"
+      :forId="'passwordNewUser'"
+      :type-input="passwordType"
+    >
+      <span
+        class="absolute text-primary right-0 mt-1 me-2 cursor-pointer"
+        @click="
+          passwordType = passwordType === 'password' ? 'text' : 'password'
+        "
+      >
+        <font-awesome-icon
+          :icon="['fas', passwordType === 'password' ? 'eye-slash' : 'eye']"
+        />
+      </span>
+      <span
+        v-if="password"
+        :class="[
+          formatPassword.valid ? 'text-primary' : 'text-danger',
+          'text-sm',
+        ]"
+      >
+        {{ formatPassword.message }}
+      </span>
+    </UiInput>
+    <UiInput
+      v-model="confirmPassword"
+      :for-id="'confirmPasswordcreateUser'"
+      :label="'Confirm Password'"
+      :forId="'confirmPasswordNewUser'"
+      :type-input="passwordType"
+    >
+      <span
+        class="absolute text-primary right-0 mt-1 me-2 cursor-pointer"
+        @click="
+          passwordType = passwordType === 'password' ? 'text' : 'password'
+        "
+      >
+        <font-awesome-icon
+          :icon="['fas', passwordType === 'password' ? 'eye-slash' : 'eye']"
+        />
+      </span>
+      <span
+        v-if="password"
+        :class="[
+          password === confirmPassword ? 'text-primary' : 'text-danger',
+          'text-sm',
+        ]"
+      >
+        {{
+          password === confirmPassword
+            ? $t("auth.passwordMatch")
+            : $t("auth.passwordNotMatch")
+        }}
+      </span>
+    </UiInput>
 
-      <form @submit.prevent="handleSignup" class="space-y-6">
-        <CoreInput
-          v-model="dataUser.name"
-          :for-id="'usernamecreateUser'"
-          :label="'Username'"
-          :forId="'username'"
-        />
-        <CoreInput
-          v-model="dataUser.email"
-          :for-id="'emailcreateUser'"
-          :label="'Email'"
-          :forId="'email'"
-          :type-input="'email'"
-        />
-        <CoreInput
-          v-model="dataUser.password"
-          :for-id="'passwordcreateUser'"
-          :label="'Password'"
-          :forId="'password'"
-          :type-input="'password'"
-        />
-        <CoreInput
-          v-model="confirmPassword"
-          :for-id="'confirmPasswordcreateUser'"
-          :label="'Confirm Password'"
-          :forId="'confirmPassword'"
-          :type-input="'password'"
-        />
-        <CoreButton :color-button="'#5865F2'" class="w-full" type="submit"
-          ><span class="!text-center block py-1">Sign Up</span></CoreButton
-        >
-      </form>
-
-      <p class="mt-6 text-center text-[#B5BAC1]">
-        Already have an account?
-        <NuxtLink
-          to="/login"
-          class="text-[#5865F2] font-medium hover:underline"
-        >
-          Sign in
-        </NuxtLink>
-      </p>
-    </div>
-  </div>
+    <!--  :loading="authStore.isLoading" -->
+    <UiButton
+      type="submit"
+      class="w-full !text-center py-2"
+      :color-button="'var(--secondary-color)'"
+    >
+      <p class="text-center">{{ $t("auth.login") }}</p>
+    </UiButton>
+  </form>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { useAuthStore } from "@/stores/auth";
+library.add(faEye, faEyeSlash);
+const authStore = useAuthStore();
+const rememberMe = ref(false);
+const email = ref("");
+const password = ref("");
+const passwordType = ref("password");
+const name = ref("");
 const confirmPassword = ref("");
-const dataUser = ref({});
-const useAuth = useAuthStore();
-const handleSignup = () => {
-  if (password.value !== confirmPassword.value) {
-    alert("Passwords do not match");
+const formatEmail = computed(() => validateEmail(email.value.trim()));
+const formatPassword = computed(() => validatePassword(password.value.trim()));
+
+const handleLogin = async () => {
+  if (authStore.isLoading) return;
+  if (
+    !formatEmail.value.valid ||
+    !formatPassword.value.valid ||
+    password.value !== confirmPassword.value
+  )
     return;
+  await authStore.authSignup({
+    email: email.value,
+    password: password.value,
+    name: name.value,
+  });
+  if (authStore.isAuthenticated) {
+    await navigateTo("/");
   }
-  useAuth.signup({ ...dataUser.value });
 };
 </script>

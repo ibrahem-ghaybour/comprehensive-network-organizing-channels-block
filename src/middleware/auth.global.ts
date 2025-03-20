@@ -1,25 +1,14 @@
-import { defineNuxtRouteMiddleware, navigateTo } from "#app";
-import { useAuthStore } from "~/store/auth";
+import { useAuthStore } from "~/stores/auth";
 
 export default defineNuxtRouteMiddleware((to) => {
-  // Skip middleware if running on server (SSR)
   if (import.meta.server) return;
-
   const authStore = useAuthStore();
-   authStore.initFromStorage();
-  // Skip middleware for login page
-  // Redirect to login if not authenticated
   if (!authStore.isAuthenticated) {
-    if (to.path !== "/login") {
-      return navigateTo("/login");
+    if (to.path !== "/auth") {
+      return navigateTo("/auth");
     }
     return;
   }
-
-  // Update last activity timestamp
-  authStore.updateLastActivity();
-  console.log("lorem tahvc");
-  // Check if the route requires specific permissions
   if (
     to.meta.requiredPermissions &&
     Array.isArray(to.meta.requiredPermissions)

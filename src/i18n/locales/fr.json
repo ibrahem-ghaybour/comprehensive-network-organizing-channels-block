@@ -85,7 +85,12 @@
     "passwordSpecialChar": "Le mot de passe doit contenir au moins un caractère spécial.",
     "passwordValid": "Le mot de passe est valide",
     "emailInvalid": "Veuillez entrer une adresse e-mail valide",
-    "emailValid": "L'e-mail est valide"
+    "emailValid": "L'e-mail est valide",
+    "signup":"S'inscrire",
+    "dontHaveAccount":"Vous n'avez pas de compte?",
+    "signupSubtitle": "Inscrivez-vous pour un nouveau compte",
+    "passwordMatch": "Les mots de passe ne correspondent pas",
+    "passwordMismatch": "Les mots de passe ne correspondent pas"
   },
   "users": {
     "title": "Utilisateurs",
