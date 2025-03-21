@@ -1,68 +1,73 @@
 <template>
   <header
-    class="fixed-header bg-background-card border-b border-border shadow-sm py-2 md:py-4 w-full !z-40"
+    :class="classParent"
+    class="fixed-header h-[60px] bg-background-card border-b border-border shadow-sm flex items-center w-full !z-40"
   >
-    <div class="container px-4 mx-auto">
-      <div
-        class="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0"
-      >
-        <!-- Logo / Title -->
-        <h1 class="text-lg md:text-2xl font-semibold text-text-heading m-0">
-          PulseBoard
-        </h1>
+    <div class="flex px-4 justify-between items-center w-full">
+      <div class="flex items-center gap-4">
+        <slot name="left"></slot>
+        <h2>Ibrahim</h2>
+      </div>
 
-        <!-- Right Side Actions -->
-        <div
-          class="flex flex-col md:flex-row items-center gap-2 md:gap-4 w-full md:w-auto"
-        >
-          <!-- User Info + Logout -->
-          <div class="flex items-center gap-2">
-            <span class="text-sm md:text-base font-medium">{{
-              authStore?.userFullName
-            }}</span>
-            <button
-              v-if="authStore?.userFullName"
-              class="bg-transparent border-none text-primary text-xs md:text-sm px-2 py-1 rounded hover:bg-gray-light cursor-pointer"
-              @click="logout"
-            >
-              {{ $t("common.logout") }}
-            </button>
-          </div>
-
-          <!-- Language Selector -->
-          <LanguageSelector />
-
-          <!-- Theme Toggle -->
-          <ThemeToggle class="ml-0 md:ml-4" />
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <span class="text-sm md:text-base font-medium">{{
+            authStore?.userName
+          }}</span>
+          <button
+            v-if="authStore?.userName"
+            class="bg-transparent border-none text-primary text-xs md:text-sm px-2 py-1 rounded hover:bg-gray-light cursor-pointer"
+            @click="shPopup = true"
+          >
+            {{ $t("auth.logout") }}
+          </button>
         </div>
+
+        <!-- Language Selector -->
+        <LanguageSelector />
+
+        <!-- Theme Toggle -->
+        <ThemeToggle class="ml-0 md:ml-4" />
       </div>
     </div>
   </header>
+  <UiPopup v-model:isOpen="shPopup">
+    <div class="text-center">
+      <h3 class="text-lg font-semibold mb-4">{{ $t("auth.logout") }}</h3>
+      <p class="text-sm text-gray-600">
+        {{ $t("auth.logoutConfirmation") }}
+      </p>
+      <div class="flex justify-center mt-4">
+        <UiButton @click="logout">
+          {{ $t("auth.logout") }}
+        </UiButton>
+      </div>
+    </div>
+  </UiPopup>
 </template>
 
 <script setup>
-import { useAuthStore } from "~/store/auth";
-import { useThemeStore } from "~/store/theme";
+import { useAuthStore } from "~/stores/auth";
 import ThemeToggle from "~/components/ui/ThemeToggle.vue";
 import LanguageSelector from "~/components/ui/LanguageSelector.vue";
+
 const router = useRouter();
 const authStore = useAuthStore();
 // const { init } = useThemeStore();
-
+const props = defineProps({
+  classParent: {
+    type: String,
+    default: "",
+  },
+});
+const shPopup = ref(false);
 async function logout() {
-  authStore.logout();
-  router.push("/login");
+  authStore.authLogout();
+  router.push("/auth");
 }
 </script>
 
 <style scoped>
-.fixed-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
 .app-header {
   background-color: var(--card-background);
   border-bottom: 1px solid var(--border-color);

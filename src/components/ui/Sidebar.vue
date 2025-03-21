@@ -1,74 +1,36 @@
-<template>
-  <nav class="bg-white shadow-md">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <!-- Logo -->
-      <div class="text-xl font-bold">
-        <NuxtLink to="/">MyLogo</NuxtLink>
-      </div>
-
-      <!-- Desktop Menu -->
-      <div class="hidden md:flex space-x-8">
-        <NuxtLink
-          v-for="(item, index) in menuItems"
-          :key="index"
-          :to="item.href"
-          class="text-gray-700 hover:text-blue-600 transition duration-200"
-        >
-          {{ item.name }}
-        </NuxtLink>
-      </div>
-
-      <!-- Mobile Menu Button -->
-      <button
-        @click="isOpen = !isOpen"
-        class="md:hidden focus:outline-none"
-        aria-label="Toggle Menu"
-      >
-        <svg
-          class="h-6 w-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            :d="isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'"
-          />
-        </svg>
-      </button>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div v-if="isOpen" class="md:hidden bg-white shadow-md">
-      <div class="px-4 py-4 flex flex-col space-y-4">
-        <NuxtLink
-          v-for="(item, index) in menuItems"
-          :key="index"
-          :to="item.href"
-          class="text-gray-700 hover:text-blue-600 transition duration-200"
-        >
-          {{ item.name }}
-        </NuxtLink>
-      </div>
-    </div>
-  </nav>
-</template>
-
 <script setup>
-import { ref } from "vue";
-import { NuxtLink } from "#components";
+import { onClickOutside } from "@vueuse/core";
 
 const isOpen = ref(false);
-const menuItems = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Services", href: "/services" },
-  { name: "Contact", href: "/contact" },
-];
+const sidebarRef = ref(null);
+
+// Toggle sidebar
+const toggle = () => {
+  isOpen.value = !isOpen.value;
+};
+
+// Close sidebar when clicking outside
+// onClickOutside(sidebarRef, () => {
+//   isOpen.value = false;
+// });
+
+// Expose toggle function so parent can control the sidebar
+defineExpose({ toggle, isOpen });
 </script>
 
+<template>
+  <div
+    ref="sidebarRef"
+    class="fixed top-0 left-0 h-full w-64 bg-background shadow-lg p-5 z-50 transition-all duration-300"
+    :class="isOpen ? 'translate-x-0' : ' -translate-x-64'"
+  >
+    <div>
+      <slot></slot>
+      <!-- Sidebar content -->
+    </div>
+  </div>
+</template>
+
 <style scoped>
-/* Optional: add any additional styling here */
+/* Smooth width transition */
 </style>

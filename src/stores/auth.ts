@@ -11,10 +11,11 @@ export const useAuthStore = defineStore("auth_store", () => {
   const isLoading = ref(false);
   const error = ref<string | null>(null);
   const message = ref<string | null>(null);
-
+  // computed
+  const userName = computed(() => currentUser.value?.name || "");
+  const userImage = computed(() => currentUser.value?.image || "");
+  // methods
   async function initFormStorage() {
-    if (import.meta.server) return; // Works correctly in Nuxt 3
-
     try {
       const auth_token = useCookie("auth_token"); // Read cookie
       if (!auth_token.value) return; // No token? Skip fetch
@@ -109,6 +110,8 @@ export const useAuthStore = defineStore("auth_store", () => {
     isLoading,
     error,
     message,
+    userName,
+    userImage,
     initFormStorage,
     authLogin,
     authUpdateProfile,

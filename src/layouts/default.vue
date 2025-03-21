@@ -1,8 +1,19 @@
 <template>
-  <div class="flex flex-col min-h-screen bg-background text-text">
-    <UiHeader />
-    <main id="main-content" class="flex-1 pt-24">
-      <div class="container max-lg:!pt-24">
+  <div
+    :class="[pageShift, 'transition-all duration-300']"
+    class="flex flex-col min-h-dvh bg-background text-text"
+  >
+    <UiHeader >
+      <template #left>
+        <UiButtonSidbar @click="toggleSidebar" />
+      </template>
+    </UiHeader>
+    <main id="main-content" class="!min-h-[calc(100dvh-60px)] mt-auto">
+      <UiSidebar ref="sidebarRef">
+        <h2 class="text-2xl font-bold">Sidebar Content</h2>
+        <p>Navigation links or other content here.</p>
+      </UiSidebar>
+      <div :class="['transition-all duration-300']">
         <slot></slot>
       </div>
     </main>
@@ -18,6 +29,17 @@
 
 <script setup>
 import { useThemeStore } from "~/store/theme";
+
+const sidebarRef = ref(null);
+// Function to toggle sidebar
+const toggleSidebar = () => {
+  sidebarRef.value.toggle();
+};
+
+// Calculate page shift when sidebar is open
+const pageShift = computed(() =>
+  sidebarRef.value?.isOpen ? "!ml-64" : "!ml-0"
+);
 const { init } = useThemeStore();
 onMounted(() => {
   init();
