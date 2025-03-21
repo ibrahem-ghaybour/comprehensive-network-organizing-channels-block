@@ -21,7 +21,7 @@ defineExpose({ toggle, isOpen });
 <template>
   <div
     ref="sidebarRef"
-    class="fixed top-0 left-0 h-full w-64 bg-background shadow-lg p-5 z-50 transition-all duration-300"
+    class="fixed top-0 left-0 h-full w-64 bg-background-card shadow-lg p-5 z-50 transition-all duration-300"
     :class="isOpen ? 'translate-x-0' : ' -translate-x-64'"
   >
     <div>

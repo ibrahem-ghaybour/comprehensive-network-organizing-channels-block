@@ -62,7 +62,8 @@ const props = defineProps({
 });
 const shPopup = ref(false);
 async function logout() {
-  authStore.authLogout();
+  shPopup.value = false;
+  await authStore.authLogout();
   router.push("/auth");
 }
 </script>

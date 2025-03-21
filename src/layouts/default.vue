@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[pageShift, 'transition-all duration-300']"
-    class="flex flex-col min-h-dvh bg-background text-text"
+    class="flex flex-col min-h-dvh bg-background text-text overflow-hidden"
   >
     <UiHeader >
       <template #left>
@@ -11,7 +11,7 @@
     <main id="main-content" class="!min-h-[calc(100dvh-60px)] mt-auto">
       <UiSidebar ref="sidebarRef">
         <h2 class="text-2xl font-bold">Sidebar Content</h2>
-        <p>Navigation links or other content here.</p>
+        <ChannelList />
       </UiSidebar>
       <div :class="['transition-all duration-300']">
         <slot></slot>

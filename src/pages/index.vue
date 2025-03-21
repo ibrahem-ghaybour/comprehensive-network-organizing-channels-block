@@ -13,8 +13,6 @@
 </script>
 
 <template>
-  <div class="flex flex-col min-h-dvh bg-background !text-[red]">
-    lorem100jdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffadsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdfsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    lorem100jdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffadsssssssssssssssssssssssssssssssssssssssssssssss
+  <div class="flex flex-col min-h-dvh bg-background">
    </div>
 </template>

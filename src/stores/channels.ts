@@ -136,6 +136,11 @@ export const useChannelStore = defineStore(
         loading.value = false;
       }
     };
+    const clearSectionChannels = () => {
+      selectedChannel.value = null;
+      channels.value = [];
+      totalChannels.value = 0;
+    };
     return {
       channels,
       totalChannels,
@@ -147,6 +152,7 @@ export const useChannelStore = defineStore(
       updateChannel,
       deleteChannel,
       onChannelSelected,
+      clearSectionChannels,
     };
   },
   {
