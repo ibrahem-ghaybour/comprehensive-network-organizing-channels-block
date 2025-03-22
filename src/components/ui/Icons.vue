@@ -61,12 +61,12 @@ const selectIcon = (name: string) => {
   <div class="p-4">
     <h2 class="text-sm font-semibold mb-4">SELECT ICONS</h2>
 
-    <div class="grid grid-cols-6 gap-4">
+    <div class="grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
       <button
         v-for="item in icons"
         :key="item.name"
         @click="selectIcon(item.name)"
-        class="p-2 border rounded hover:bg-muted text-xl"
+        class="p-2 border rounded hover:bg-primary hover:text-text !bg-opacity-80 text-xl"
         :class="
           selectedIcon === item.name
             ? 'border-primary text-primary'

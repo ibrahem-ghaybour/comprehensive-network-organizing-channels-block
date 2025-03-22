@@ -38,7 +38,7 @@
     <Transition name="change" mode="out-in">
       <ChannelSaveEdit
         v-if="showSaveChange"
-        class="sticky w-[calc(100%-2.5rem)] bottom-0"
+        class="fixed w-[calc(100%-20rem)] bottom-6"
         @reset="showSaveChange = false"
         @save="saveChannel"
     /></Transition>
@@ -103,4 +103,15 @@ watch(
 );
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.change-enter-active,
+.change-leave-active {
+  transition: all 0.3s ease;
+}
+
+.change-enter-from,
+.change-leave-to {
+  opacity: 0;
+  transform: translateY(100%);
+}
+</style>

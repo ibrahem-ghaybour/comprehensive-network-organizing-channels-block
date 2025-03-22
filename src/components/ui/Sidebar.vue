@@ -35,9 +35,10 @@ defineExpose({ toggle, isOpen });
 <template>
   <div
     ref="sidebarRef"
-    class="fixed top-0 left-0 h-dvh overflow-y-auto w-64 bg-background-card shadow-lg p-5 z-50 transition-all duration-300"
-    :class="isOpen ? 'translate-x-0' : '-translate-x-64'"
+    class="fixed top-0 left-0 h-dvh overflow-y-auto lg:w-64 w-full bg-background-card shadow-lg p-5 z-50 transition-all duration-300"
+    :class="isOpen ? 'translate-x-0' : 'lg:-translate-x-64 -translate-x-full'"
   >
+  <UiCloseButton class="hidden max-lg:block" @click="toggle" />
     <slot />
   </div>
 </template>

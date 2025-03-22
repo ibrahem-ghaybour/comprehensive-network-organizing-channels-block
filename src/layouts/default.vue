@@ -39,7 +39,7 @@ const toggleSidebar = () => {
 
 // Calculate page shift when sidebar is open
 const pageShift = computed(() =>
-  sidebarRef.value?.isOpen&& authStore.isAuthenticated ? "!ml-64" : "!ml-0"
+  sidebarRef.value?.isOpen&& authStore.isAuthenticated ? "lg:!ml-64 ml-0" : "!ml-0"
 );
 const { init } = useThemeStore();
 onMounted(() => {
