@@ -1,10 +1,14 @@
 <template>
-  <div class="p-5 w-full relative h-[90vh]">
-    <h2 class="mb-3 text-xl">Overview</h2>
-
+  <div class="p-5 w-full relative">
+    <h2 class="mb-3 text-xl">
+      Overview
+      <UiCloseButton
+        @click="router.push({ params: { id: '', edit: false } })"
+      />
+    </h2>
     <fieldset class="">
       <legend class="sr-only">Channel Settings</legend>
-      <CoreInput
+      <UiInput
         class="pb-10"
         v-model="updateDataChannel.name"
         :label="'CHANNEL NAME'"
@@ -17,23 +21,24 @@
         >
         <textarea
           id="channelTopic"
-          v-model="updateDataChannel.topic"
-          class="w-full"
+          v-model="updateDataChannel.description"
+          class="w-full bg-gray-dark mt-2"
           rows="3"
           maxlength="1024"
           placeholder="Let everyone know how to use this channel!"
           aria-label="Channel Topic"
         ></textarea>
       </div>
-      <div class="w-full pt-6">
+      <div class="w-full py-6">
         <span class="text-[0.7rem]">SECLECT ICONS</span>
-        <CoreSelectIcon @select="select" />
+        <!-- <UiSelectIcon @select="select" /> -->
+        <UiIcons @select-icon="select" />
       </div>
     </fieldset>
     <Transition name="change" mode="out-in">
       <ChannelSaveEdit
         v-if="showSaveChange"
-        class="absolute w-[calc(100%-2.5rem)] bottom-0"
+        class="sticky w-[calc(100%-2.5rem)] bottom-0"
         @reset="showSaveChange = false"
         @save="saveChannel"
     /></Transition>
@@ -41,54 +46,61 @@
 </template>
 
 <script setup>
+import { useChannelStore } from "~/stores/channels";
 const props = defineProps({
-  groupId: {
+  channelId: {
     type: String,
     default: "",
   },
 });
-const { updateGroup, getGroupById } = useGroupStore();
+
+const channelsStore = useChannelStore();
 const showSaveChange = ref(false);
-const updateDataChannel = ref({});
-const saveChannel = () => {
-  updateGroup(props.groupId, updateDataChannel.value);
-  showSaveChange.value = false;
+const router = useRouter();
+const channel = computed(() => {
+  return channelsStore.getChannelById(props.channelId);
+});
+const updateDataChannel = ref({
+  name: "",
+  description: "",
+  icon: "",
+});
+const select = (icon) => {
+  updateDataChannel.value.icon = icon;
 };
-const select = (val) => {
-  updateDataChannel.value.icon = val;
+const saveChannel = () => {
+  channelsStore.updateChannel(props.channelId, updateDataChannel.value);
+  router.push({ params: { id: "", edit: false } });
 };
 
-watchEffect(() => {
-  const group = getGroupById(props.groupId);
-  if (group) {
-    updateDataChannel.value = { ...group };
-  }
-});
+const skipWatch = ref(false);
+
 watch(
   updateDataChannel,
-  (newVal, oldVal) => {
-    if (oldVal != newVal) return;
-    showSaveChange.value = true;
+  (newVal) => {
+    if (skipWatch.value) return;
+    newVal.name !== channel.value?.name ||
+    newVal.description !== channel.value?.description ||
+    newVal.icon !== channel.value?.icon
+      ? (showSaveChange.value = true)
+      : (showSaveChange.value = false);
   },
   { deep: true }
 );
+
+watch(
+  () => props.channelId,
+  (newVal) => {
+    const group = channelsStore.getChannelById(newVal);
+    if (group) {
+      skipWatch.value = true;
+      updateDataChannel.value = { ...group };
+      skipWatch.value = false;
+    }
+    showSaveChange.value = false;
+  },
+  { immediate: true }
+);
 </script>
 
-<style lang="scss" scoped>
-.change-enter-active,
-.change-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.change-enter-from,
-.change-leave-to {
-  opacity: 0;
-  transform: scale(1.5);
-}
-
-.change-enter-to,
-.change-leave-from {
-  opacity: 1;
-  transform: scale(1);
-}
-</style>
+<style lang="scss" scoped></style>

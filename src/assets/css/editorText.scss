@@ -1,6 +1,6 @@
 /* Toolbar background & button color */
 .ql-toolbar {
-  background-color: var(--input); /* dark background */
+  background-color: var(--dark-gray); /* dark background */
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
   border: none !important;
@@ -11,15 +11,15 @@
 }
 
 .ql-toolbar button:hover {
-  background-color: var(--primary); /* hover background */
+  background-color: var(--background-color); /* hover background */
 }
 
 /* Editor container */
 .ql-container {
-  background-color: var(--input); /* editor background */
+  background-color: var(--dark-gray); /* editor background */
   border: none !important;
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
  
 }
-@import "@/assets/scss/textSi.scss";
+@import "@/assets/css/textSi.scss";

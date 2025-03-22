@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-[#111214] !text-[12px] text-white flex items-center justify-between p-3 rounded-sm"
+    class="!text-[12px] bg-background-card flex items-center justify-between p-3 rounded-sm"
   >
     <p class="text-sm">Careful - you have unsaved changes!</p>
     <div class="flex gap-2">
@@ -11,7 +11,12 @@
       >
         Reset
       </button>
-      <CoreButton type="button" @click="emit('save')">Save Changes </CoreButton>
+      <UiButton
+        :color-button="'var(--primary-color)'"
+        type="button"
+        @click="emit('save')"
+        >Save Changes
+      </UiButton>
       <!-- <button
         type="button"
         @click="emit('save')"

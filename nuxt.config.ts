@@ -1,8 +1,9 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
+  ssr: false,
   devtools: { enabled: true },
   srcDir: "src/",
-  css: ["~/assets/css/main.css"],
+  css: ["~/assets/css/main.css","quill/dist/quill.snow.css"],
   // Add Pinia for state management and Tailwind CSS
   modules: ["@nuxtjs/tailwindcss"],
   // pinia: {

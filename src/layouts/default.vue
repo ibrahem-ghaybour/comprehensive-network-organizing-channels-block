@@ -3,13 +3,13 @@
     :class="[pageShift, 'transition-all duration-300']"
     class="flex flex-col min-h-dvh bg-background text-text overflow-hidden"
   >
-    <UiHeader >
+    <UiHeader>
       <template #left>
         <UiButtonSidbar @click="toggleSidebar" />
       </template>
     </UiHeader>
-    <main id="main-content" class="!min-h-[calc(100dvh-60px)] mt-auto">
-      <UiSidebar ref="sidebarRef">
+    <main id="main-content" class="mt-auto">
+      <UiSidebar v-if="authStore.isAuthenticated" ref="sidebarRef">
         <h2 class="text-2xl font-bold">Sidebar Content</h2>
         <ChannelList />
       </UiSidebar>
@@ -29,8 +29,9 @@
 
 <script setup>
 import { useThemeStore } from "~/store/theme";
-
+import { useAuthStore } from "~/stores/auth";
 const sidebarRef = ref(null);
+const authStore = useAuthStore();
 // Function to toggle sidebar
 const toggleSidebar = () => {
   sidebarRef.value.toggle();
@@ -38,7 +39,7 @@ const toggleSidebar = () => {
 
 // Calculate page shift when sidebar is open
 const pageShift = computed(() =>
-  sidebarRef.value?.isOpen ? "!ml-64" : "!ml-0"
+  sidebarRef.value?.isOpen&& authStore.isAuthenticated ? "!ml-64" : "!ml-0"
 );
 const { init } = useThemeStore();
 onMounted(() => {

@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useChannelsApi } from "~/api/channels"; // Import your API
+import { useAuthStore } from "@/stores/auth";
 import type {
   Channel,
   ChannelFilters,
@@ -8,10 +9,11 @@ import type {
 } from "~/types/channel";
 
 export const useChannelStore = defineStore(
-  "channels",
+  "channel",
   () => {
-    if (import.meta.server) return; // Prevent SSR
+    // if (import.meta.server) return; // Prevent SSR
     const api = useChannelsApi();
+    const useAuth = useAuthStore();
     // State: Stores channels and loading status
     const channels = ref<Channel[]>([]);
     const totalChannels = ref<number>(0);
@@ -19,6 +21,7 @@ export const useChannelStore = defineStore(
     const selectedChannel = ref<Channel | null>(null);
     const error = ref<string | null>(null);
 
+    // Methods
     // Fetch all channels
     const fetchChannels = async (params: ChannelFilters) => {
       if (channels.value.length > 0) return; // Use cached data, prevent unnecessary
@@ -34,7 +37,6 @@ export const useChannelStore = defineStore(
               : "An error occurred while fetching channels"
           );
         }
-
         channels.value = response.data;
         console.log(response);
         totalChannels.value = response.total;
@@ -59,7 +61,6 @@ export const useChannelStore = defineStore(
               : "An error occurred while fetching channel"
           );
         }
-
         selectedChannel.value = channelSe;
       } catch (error) {
         console.error("Error fetching channel:", error);
@@ -140,12 +141,28 @@ export const useChannelStore = defineStore(
       selectedChannel.value = null;
       channels.value = [];
       totalChannels.value = 0;
+      console.log("Cleared channels", channels.value);
     };
+    const getChannelById = (id: string) =>
+      channels.value.find((ch) => ch._id === id) || null;
+
+    watch(
+      () => useAuth.isAuthenticated,
+      (isAuth) => {
+        if (import.meta.server) return;
+        if (!isAuth) {
+          clearSectionChannels();
+        }
+        fetchChannels({ pageSize: 10, page: 1 });
+      },
+      { immediate: true } // So it also runs on first load
+    );
     return {
       channels,
       totalChannels,
       selectedChannel,
       loading,
+      getChannelById,
       fetchChannels,
       fetchChannelById,
       createChannel,
@@ -158,6 +175,7 @@ export const useChannelStore = defineStore(
   {
     persist: {
       storage: import.meta.client ? sessionStorage : undefined,
+      pick: ["channels", "selectedChannel"],
     },
   }
 );

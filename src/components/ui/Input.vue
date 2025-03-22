@@ -4,7 +4,7 @@
       {{ label }}
     </label>
     <input
-      class="bg-gray-dark py-1 px-2 rounded-sm w-full"
+      class="bg-gray-dark py-[0.35rem] px-2 rounded-sm w-full"
       :id="forId"
       :type="typeInput"
       :maxlength="`${typeInput === 'text' ? '30' : '124'}`"

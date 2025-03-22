@@ -61,6 +61,7 @@ export const useAuthStore = defineStore("auth_store", () => {
       // Clear authentication-related values
       auth_token.value = ""; // Clear cookie properly
       currentUser.value = null;
+      message.value = "User logged out successfully";
       isAuthenticated.value = false;
     } catch (err) {
       error.value = err.message || "An error occurred during logout";
