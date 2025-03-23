@@ -22,7 +22,7 @@ export function useChannelsApi() {
 
     createChannel: async (data: CreateChannelRequest) =>
       await apiRequest<Channel>({
-        endpoint: "channels",
+        endpoint: "groups",
         method: "POST",
         body: data,
         requireAuth: true,

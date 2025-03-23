@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import { onClickOutside } from "@vueuse/core";
+// import { onClickOutside } from "@vueuse/core";
 
 const STORAGE_KEY = "sidebar-is-open";
 

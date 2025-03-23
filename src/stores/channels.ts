@@ -153,7 +153,7 @@ export const useChannelStore = defineStore(
         if (!isAuth) {
           clearSectionChannels();
         }
-        fetchChannels({ pageSize: 10, page: 1 });
+        fetchChannels({ pageSize: 15, page: 1 });
       },
       { immediate: true } // So it also runs on first load
     );
@@ -162,6 +162,7 @@ export const useChannelStore = defineStore(
       totalChannels,
       selectedChannel,
       loading,
+      error,
       getChannelById,
       fetchChannels,
       fetchChannelById,

@@ -70,7 +70,7 @@ export const useBlogsStore = defineStore("blogs", () => {
       if (index !== -1) {
         blogs.value[index] = updatedBlog;
       }
-      if (selectedBlog.value && selectedBlog.value.id === id) {
+      if (selectedBlog.value && selectedBlog.value._id === id) {
         selectedBlog.value = updatedBlog;
       }
       return updatedBlog;

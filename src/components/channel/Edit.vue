@@ -47,6 +47,7 @@
 
 <script setup>
 import { useChannelStore } from "~/stores/channels";
+import { useAuthStore } from "~/stores/auth";
 const props = defineProps({
   channelId: {
     type: String,
@@ -54,11 +55,12 @@ const props = defineProps({
   },
 });
 
-const channelsStore = useChannelStore();
+const useChannel = useChannelStore();
+const useAuth = useAuthStore();
 const showSaveChange = ref(false);
 const router = useRouter();
 const channel = computed(() => {
-  return channelsStore.getChannelById(props.channelId);
+  return useChannel.getChannelById(props.channelId);
 });
 const updateDataChannel = ref({
   name: "",
@@ -69,10 +71,17 @@ const select = (icon) => {
   updateDataChannel.value.icon = icon;
 };
 const saveChannel = () => {
-  channelsStore.updateChannel(props.channelId, updateDataChannel.value);
-  router.push({ params: { id: "", edit: false } });
+  if (props.channelId === "") newChannel();
+  else useChannel.updateChannel(props.channelId, updateDataChannel.value);
+  router.push("?");
 };
-
+const newChannel = () => {
+  useChannel.createChannel({
+    ...updateDataChannel.value,
+    userId: useAuth.currentUser._id,
+  });
+  console.log(updateDataChannel.value);
+};
 const skipWatch = ref(false);
 
 watch(
@@ -91,12 +100,14 @@ watch(
 watch(
   () => props.channelId,
   (newVal) => {
-    const group = channelsStore.getChannelById(newVal);
-    if (group) {
-      skipWatch.value = true;
-      updateDataChannel.value = { ...group };
-      skipWatch.value = false;
+    const group = useChannel.getChannelById(newVal);
+    if (!group) {
+      updateDataChannel.value = {};
     }
+    skipWatch.value = true;
+    updateDataChannel.value = { ...group };
+    skipWatch.value = false;
+
     showSaveChange.value = false;
   },
   { immediate: true }

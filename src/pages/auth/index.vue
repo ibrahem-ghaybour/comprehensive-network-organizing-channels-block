@@ -1,54 +1,53 @@
 <template>
-  <ClientOnly>
-    <div class="min-h-screen flex items-center justify-center p-8">
-      <div class="w-full max-w-md bg-background-card rounded-lg shadow-md p-8">
-        <div class="text-center mb-8">
-          <h1 class="text-3xl font-bold text-center mb-2">
-            {{ route.query.signup ? $t("auth.signup") : $t("auth.login") }}
-          </h1>
-          <p class="text-text opacity-80">
-            {{
-              route.query.signup
-                ? $t("auth.signupSubtitle")
-                : $t("auth.loginSubtitle")
-            }}
-          </p>
-        </div>
-        <!-- <h1 class="text-3xl font-bold text-white text-center mb-2">
+  <div class="min-h-screen flex items-center justify-center p-8">
+    <div class="w-full max-w-md bg-background-card rounded-lg shadow-md p-8">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-center mb-2">
+          {{ route.query.signup ? $t("auth.signup") : $t("auth.login") }}
+        </h1>
+        <p class="text-text opacity-80">
+          {{
+            route.query.signup
+              ? $t("auth.signupSubtitle")
+              : $t("auth.loginSubtitle")
+          }}
+        </p>
+      </div>
+      <!-- <h1 class="text-3xl font-bold text-white text-center mb-2">
         Create an Account
       </h1> -->
-        <!-- <p class="text-[#B5BAC1] text-center mb-8">Join our community today</p> -->
-        <div class="min-h-14">
-          <div
-            v-if="authStore.error"
-            class="bg-danger text-white p-3 rounded-md mb-6"
-          >
-            {{ authStore.error }}
-          </div>
-          <div v-if="authStore.message">
-            <p class="bg-primary text-white p-3 rounded-md mb-6">
-              {{ authStore.message }}
-            </p>
-          </div>
-          <div
-            v-if="sessionExpired"
-            class="bg-warning text-text p-3 rounded-md mb-6"
-          >
-            {{ $t("auth.sessionExpired") }}
-          </div>
+      <!-- <p class="text-[#B5BAC1] text-center mb-8">Join our community today</p> -->
+      <div class="min-h-14">
+        <div
+          v-if="authStore.error"
+          class="bg-danger text-white p-3 rounded-md mb-6"
+        >
+          {{ authStore.error }}
         </div>
-        <AuthLogin v-if="!route.query.signup"></AuthLogin>
-        <AuthSignup v-else></AuthSignup>
-        <p class="mt-6 text-sm text-center text-[#B5BAC1]">
-          {{ $t("auth.dontHaveAccount") }}
-          <NuxtLink
-            :to="{ query: route.query.signup ? {} : { signup: 'true' } }"
-            class="text-[--secondary-color] font-medium hover:underline"
-          >
-            {{ route.query.signup ? $t("auth.login") : $t("auth.signup") }}
-          </NuxtLink>
-        </p>
-        <!-- <div class="mt-8 pt-6 border-t border-border">
+        <div v-if="authStore.message">
+          <p class="bg-primary text-white p-3 rounded-md mb-6">
+            {{ authStore.message }}
+          </p>
+        </div>
+        <div
+          v-if="sessionExpired"
+          class="bg-warning text-text p-3 rounded-md mb-6"
+        >
+          {{ $t("auth.sessionExpired") }}
+        </div>
+      </div>
+      <AuthLogin v-if="!route.query.signup"></AuthLogin>
+      <AuthSignup v-else></AuthSignup>
+      <p class="mt-6 text-sm text-center text-[#B5BAC1]">
+        {{ $t("auth.dontHaveAccount") }}
+        <NuxtLink
+          :to="{ query: route.query.signup ? {} : { signup: 'true' } }"
+          class="text-[--secondary-color] font-medium hover:underline"
+        >
+          {{ route.query.signup ? $t("auth.login") : $t("auth.signup") }}
+        </NuxtLink>
+      </p>
+      <!-- <div class="mt-8 pt-6 border-t border-border">
           <h3 class="text-lg font-semibold mb-2">{{ $t("auth.demoUsers") }}</h3>
           <p class="text-text opacity-80 mb-4">
             {{ $t("auth.demoUsersDescription") }}
@@ -88,9 +87,8 @@
             </button>
           </div>
         </div> -->
-      </div>
     </div>
-  </ClientOnly>
+  </div>
 </template>
 
 <script setup lang="ts">

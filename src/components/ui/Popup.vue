@@ -1,28 +1,25 @@
 <template>
-  <Transition name="overlay"
+  <Transition name="popup"
     ><Teleport to="body">
       <div
-        v-show="isOpen"
+        v-if="isOpen"
         class="fixed inset-0 bg-black/50 flex items-center justify-center !z-50"
         @click.self="close"
       >
-        <Transition name="popup">
-          <div
-            v-if="isOpen"
-            :class="[
-              `bg-background p-8 rounded-xl relative overflow-y-auto shadow-lg ${
-                parentClass ? '' : 'max-w-[90%] max-h-[90vh]'
-              }`,
-              parentClass,
-            ]"
-          >
-            <UiCloseButton
-              class="rounded-full border w-7 h-7 text-[14px] flex justify-center items-center"
-              @click="close"
-            ></UiCloseButton>
-            <slot></slot>
-          </div>
-        </Transition></div
+        <div
+          :class="[
+            `bg-background p-8 rounded-xl relative overflow-y-auto shadow-lg ${
+              parentClass ? '' : 'max-w-[90%] max-h-[90vh]'
+            }`,
+            parentClass,
+          ]"
+        >
+          <UiCloseButton
+            class="rounded-full border w-7 h-7 text-[14px] flex justify-center items-center"
+            @click="close"
+          ></UiCloseButton>
+          <slot></slot>
+        </div></div
     ></Teleport>
   </Transition>
 </template>
@@ -62,15 +59,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.overlay-enter-active,
-.overlay-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.overlay-enter-from,
-.overlay-leave-to {
-  opacity: 0;
-}
 
 .popup-enter-active,
 .popup-leave-active {

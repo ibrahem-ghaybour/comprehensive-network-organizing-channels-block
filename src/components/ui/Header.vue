@@ -34,7 +34,7 @@
   <UiPopup v-model:isOpen="shPopup">
     <div class="text-center">
       <h3 class="text-lg font-semibold mb-4">{{ $t("auth.logout") }}</h3>
-      <p class="text-sm text-gray-600">
+      <p class="text-sm">
         {{ $t("auth.logoutConfirmation") }}
       </p>
       <div class="flex justify-center mt-4">

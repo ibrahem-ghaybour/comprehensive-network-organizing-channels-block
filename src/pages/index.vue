@@ -1,11 +1,9 @@
 <script setup>
+import { useChannelStore } from "~/stores/channels";
 const route = useRoute();
+const useChannels = useChannelStore();
 const sectionEdit = ref(false);
-onMounted(() => {
-  if (route.query.edit === "true") {
-    sectionEdit.value = true;
-  }
-});
+
 watch(
   () => route.query.edit,
   (newVal) => {
@@ -14,7 +12,8 @@ watch(
     } else {
       sectionEdit.value = false;
     }
-  }
+  },
+  { immediate: true }
 );
 </script>
 
@@ -23,7 +22,19 @@ watch(
     <Transition name="change" mode="out-in">
       <ChannelEdit v-if="sectionEdit" :channel-id="route?.query?.id" />
     </Transition>
-    <p></p>
+    <Transition name="error">
+      <Teleport to="body">
+        <UiError
+          v-if="useChannels.error"
+          :error-messages="useChannels.error"
+          @restart="
+            useChannels.channels = [];
+            useChannels.fetchChannels();
+          "
+          @reset="useChannels.error = null"
+        ></UiError>
+      </Teleport>
+    </Transition>
   </div>
 </template>
 
@@ -35,6 +46,15 @@ watch(
 .change-enter-from,
 .change-leave-to {
   transform: translateY(30px);
-  opacity:0;
+  opacity: 0;
+}
+.error-enter-active,
+.error-leave-active {
+  transition: all 0.2s ease;
+}
+.error-enter-from,
+.error-leave-to {
+  bottom: -30px;
+  opacity: 0;
 }
 </style>

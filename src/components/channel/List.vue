@@ -1,5 +1,14 @@
 <template>
   <div>
+    <p class="text-sm my-2 border-b flex justify-between">
+      <span>{{ $t("channels.newChannel") }}</span>
+      <button
+        @click="paramChannel('edit=true')"
+        class="transition duration-200 hover:bg-gray-light px-2 rounded-lg"
+      >
+        <font-awesome-icon :icon="['fas', 'plus']" />
+      </button>
+    </p>
     <ul>
       <li
         v-for="channel in useChannels.channels"
@@ -10,15 +19,21 @@
           class="w-full group p-2 rounded-[5px] flex items-center justify-between capitalize truncate !text-start"
           @click="useChannels.onChannelSelected(channel._id)"
         >
-          <span>{{ channel.name }}</span>
+          <div class="w-full flex items-center gap-x-1">
+            <span><UiIcon :icon="channel.icon" /></span>
+            <span class="truncate">{{ channel.name }}</span>
+          </div>
           <!-- Instead of hidden/flex, we animate opacity and position -->
           <div
-            class="flex gap-x-1 text-primary opacity-0 transform -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+            class="flex absolute right-1 gap-x-1 text-primary opacity-0 transform -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
           >
-            <span @click.stop="editChannel(channel._id)">
+            <span
+              class=""
+              @click.stop="paramChannel(`edit=true&id=${channel._id}`)"
+            >
               <font-awesome-icon :icon="['fas', 'file-pen']" />
             </span>
-            <span>
+            <span @click.stop="channelId = channel._id">
               <font-awesome-icon :icon="['fas', 'trash-can']" />
             </span>
           </div>
@@ -26,19 +41,47 @@
       </li>
     </ul>
   </div>
+  <UiPopup v-model:isOpen="channelId">
+    <div class="text-center">
+      <h3 class="mb-10">{{ $t("common.sureDelete") }}</h3>
+      <div class="flex justify-center gap-x-2">
+        <UiButton
+          type="button"
+          @click="channelId = null"
+          :color-button="'var(--primary-color)'"
+        >
+          {{ $t("common.cancel") }}
+        </UiButton>
+        <UiButton
+          type="button"
+          @click="
+            useChannels.deleteChannel(channelId);
+            channelId = null;
+          "
+          :color-button="'var(--danger-color)'"
+        >
+          {{ $t("common.delete") }}
+        </UiButton>
+      </div>
+    </div>
+  </UiPopup>
 </template>
 
 <script setup>
 import { useChannelStore } from "~/stores/channels";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faFilePen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-library.add(faFilePen, faTrashCan);
+import {
+  faFilePen,
+  faTrashCan,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+library.add(faFilePen, faTrashCan, faPlus);
 const useChannels = useChannelStore();
-const showEdit = ref(false);
+const channelId = ref(false);
 const router = useRouter();
-const editChannel = (id) => {
-  router.push(`?edit=true&id=${id}`);
+const paramChannel = (param) => {
+  router.push(`?${param}`);
 };
 </script>
 
