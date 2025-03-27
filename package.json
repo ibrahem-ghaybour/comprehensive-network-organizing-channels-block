@@ -24,6 +24,7 @@
     "@pinia/nuxt": "^0.10.1",
     "@volar/typescript": "^2.4.12",
     "@vueuse/core": "^13.0.0",
+    "dayjs": "^1.11.13",
     "h3": "^1.10.1",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.2.0",

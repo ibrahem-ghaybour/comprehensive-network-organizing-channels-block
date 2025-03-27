@@ -3,7 +3,8 @@ import { useChannelStore } from "~/stores/channels";
 const route = useRoute();
 const useChannels = useChannelStore();
 const sectionEdit = ref(false);
-
+onMounted(()=>{
+})
 watch(
   () => route.query.edit,
   (newVal) => {

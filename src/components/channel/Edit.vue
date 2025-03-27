@@ -2,9 +2,7 @@
   <div class="p-5 w-full relative">
     <h2 class="mb-3 text-xl">
       Overview
-      <UiCloseButton
-        @click="router.push({ params: { id: '', edit: false } })"
-      />
+      <UiCloseButton @click="router.push('?')" />
     </h2>
     <fieldset class="">
       <legend class="sr-only">Channel Settings</legend>
@@ -115,14 +113,5 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.change-enter-active,
-.change-leave-active {
-  transition: all 0.3s ease;
-}
 
-.change-enter-from,
-.change-leave-to {
-  opacity: 0;
-  transform: translateY(100%);
-}
 </style>

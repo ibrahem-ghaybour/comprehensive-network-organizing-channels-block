@@ -16,7 +16,12 @@ export function useBlogsApi() {
         params,
         requireAuth: true,
       }),
-
+    fetchBlogsByChannelId: async (channelId: string) =>
+      await apiRequest<Blog[]>({
+        endpoint: `blogs/group/${channelId}`,
+        method: "GET",
+        requireAuth: true,
+      }),
     fetchBlogById: async (id: string) =>
       await apiRequest<Blog>({
         endpoint: `blogs/${id}`,
@@ -26,7 +31,7 @@ export function useBlogsApi() {
 
     createBlog: async (data: CreateBlogRequest) =>
       await apiRequest<Blog>({
-        endpoint: "channels",
+        endpoint: "blogs",
         method: "POST",
         body: data,
         requireAuth: true,

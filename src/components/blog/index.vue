@@ -1,91 +1,69 @@
 <template>
   <div
     @click="emit('openDetails')"
-    class="w-full blogTextVaueEdit h-[140px] group relative bg-blog rounded-lg p-3 mb-3 shadow-lg transition-all !cursor-pointer hover:-translate-y-1 hover:shadow-2xl"
+    class="w-full !text-text blogTextValueEdit p-3 pb-6 h-[140px] group relative bg-[--blog-color] rounded-lg mb-3 shadow-lg transition-all !cursor-pointer hover:-translate-y-1 hover:shadow-2xl"
   >
-    <CoreTooltip
-      @click.stop="isOpenEdit = true"
-      :data-tooltip="'Edit Blog'"
+    <UiTooltip
+      v-role="blog.userId"
+      @click.stop="saveChange"
+      :data-tooltip="isOpenEdit ? 'Save Blog' : 'Edit Blog'"
       class="opacity-0 !absolute top-2 end-4 !transition-opacity !duration-300 group-hover:opacity-100"
+      :class="isOpenEdit ? 'text-primary' : 'text-white'"
     >
-      <font-awesome-icon icon="gear" />
-    </CoreTooltip>
-    <div
-      v-html="contentHTML"
-      ref="textHtml"
-      class="ql-editor multiline-truncate !line-clamp-2"
-    ></div>
+      <font-awesome-icon :icon="isOpenEdit ? 'check' : 'gear'" />
+    </UiTooltip>
+    <div class="flex flex-col justify-between h-full">
+      <h2 v-if="!isOpenEdit" class="!line-clamp-3">{{ blog.title }}</h2>
+      <UiInput class="!w-[95%]" v-else v-model="dataChange.title" />
+      <div class="pe-4 !text-[12px] flex items-center">
+        <span class="font-bold">userName :</span>
+        <UiTextHtml
+          class="!font-normal"
+          :qlEditor="false"
+          :text="blog.htmlText"
+        />
+      </div>
+    </div>
+    <div class="absolute bottom-1 start-2 text-sm flex items-center gap-1">
+      <span><font-awesome-icon :icon="['fas', 'comment']" /></span>
+      .
+      <UiRelativeTime :time="blog.created_at" />
+    </div>
   </div>
-  <CorePopup
-    class="popupEditorText"
-    v-model:isOpen="isOpenEdit"
-    @close="setContents(props.blog.title)"
-  >
-    <CoreEditorText
-      class="mb-2"
-      :textEdit="blog.title"
-      @update:edit="updateEdiorText"
-    />
-    <CoreButton @click="savaChange">save</CoreButton>
-  </CorePopup>
 </template>
 
-<script setup>
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+<script lang="ts" setup>
+import { useBlogsStore } from "~/stores/blogs";
+import type { Blog } from "~/types/blogs";
+import {
+  faCaretDown,
+  faComment,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-library.add(faCaretDown);
-const emit = defineEmits("openDetails");
-import Quill from "quill";
+library.add(faCaretDown, faComment, faCheck);
 
-const isOpenEdit = ref(false);
-const props = defineProps({
-  blog: {
-    id: String,
-    userName: String,
-    title: String,
-    groupId: String,
-    created_at: String,
-    updated_at: String,
-  },
-});
+const emit = defineEmits(["openDetails"]);
 
-const dataChange = ref({ ...props.blog });
-const textHtml = ref(null);
-const contentHTML = ref("");
-let quill;
+const props = defineProps<{
+  blog: Blog;
+}>();
+const isOpenEdit = ref<boolean>(false);
+const dataChange = ref<Blog>({ ...props.blog });
 
 const { updateBlog } = useBlogsStore();
 
-const updateEdiorText = (e) => {
-  dataChange.value = { ...props.blog, title: e };
+// Function to save changes
+const saveChange = () => {
+  if (isOpenEdit.value && dataChange.value.title !== props.blog.title)
+    updateBlog(props.blog._id, dataChange.value);
+  isOpenEdit.value = !isOpenEdit.value;
 };
-
-const savaChange = () => {
-  updateBlog(props.blog.id, dataChange.value);
-  isOpenEdit.value = false;
-};
-const setContents = (con) => {
-  quill.setContents(con);
-  contentHTML.value = quill.root.innerHTML;
-};
-onMounted(() => {
-  quill = new Quill(textHtml.value);
-  setContents(props.blog.title);
-});
-
-watch(
-  () => dataChange.value?.title,
-  () => {
-    if (!quill) return;
-    setContents(dataChange.value.title);
-  }
-);
 </script>
 
 <style lang="scss">
-.blogTextVaueEdit {
-  @import "@/assets/scss/textSi.scss";
+.blogTextValueEdit {
   user-select: none !important;
   cursor: pointer !important;
   .ql-editor {
@@ -95,7 +73,7 @@ watch(
   }
 }
 .popupEditorText {
-  @import "@/assets/scss/editorText.scss";
+  @import "@/assets/css/editorText.scss";
   user-select: none !important;
   cursor: pointer !important;
 }

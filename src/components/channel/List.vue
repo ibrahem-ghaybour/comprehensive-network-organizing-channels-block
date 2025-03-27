@@ -3,7 +3,7 @@
     <p class="text-sm my-2 border-b flex justify-between">
       <span>{{ $t("channels.newChannel") }}</span>
       <button
-        @click="paramChannel('edit=true')"
+        @click="directing('/?edit=true')"
         class="transition duration-200 hover:bg-gray-light px-2 rounded-lg"
       >
         <font-awesome-icon :icon="['fas', 'plus']" />
@@ -17,7 +17,10 @@
       >
         <button
           class="w-full group p-2 rounded-[5px] flex items-center justify-between capitalize truncate !text-start"
-          @click="useChannels.onChannelSelected(channel._id)"
+          @click="
+            useChannels.onChannelSelected(channel._id);
+            directing(`/${channel._id}`);
+          "
         >
           <div class="w-full flex items-center gap-x-1">
             <span><UiIcon :icon="channel.icon" /></span>
@@ -29,7 +32,7 @@
           >
             <span
               class=""
-              @click.stop="paramChannel(`edit=true&id=${channel._id}`)"
+              @click.stop="directing(`?edit=true&id=${channel._id}`)"
             >
               <font-awesome-icon :icon="['fas', 'file-pen']" />
             </span>
@@ -80,8 +83,8 @@ library.add(faFilePen, faTrashCan, faPlus);
 const useChannels = useChannelStore();
 const channelId = ref(false);
 const router = useRouter();
-const paramChannel = (param) => {
-  router.push(`?${param}`);
+const directing = (param) => {
+  router.push(`${param}`);
 };
 </script>
 

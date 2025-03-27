@@ -25,7 +25,7 @@
     --light-gray: #ecf0f1; /* Silky Silver */
     --medium-gray: #bdc3c7; /* Warm Gray */
     --dark-gray: #ecf0f1; /* Urban Slate */
-
+    --blog-color:#fafafa;
     --danger-color: #f86454f0; /* Striking Red Coral */
     --success-color: #27ae60; /* Vibrant Emerald Green */
     --warning-color: #f39c12; /* Golden Amber */
@@ -45,7 +45,7 @@
     --background-color: #313338; /* Rich Jet Black */
     --card-background: #2B2D31; /* Graphite Black */
     --border-color: #2c2f33; /* Subtle Dark Gray */
-
+    --blog-color:#393C41;
     --light-gray: #35373c; /* Muted Charcoal */
     --medium-gray: #4e4f50; /* Refined Graphite */
     --dark-gray: #1e1f22; /* Smoky Gray */

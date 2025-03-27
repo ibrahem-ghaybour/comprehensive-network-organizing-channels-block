@@ -2,8 +2,8 @@
 import Quill from "quill";
 const props = defineProps({
   textEdit: {
-    type: Object,
-    default: {},
+    type: String,
+    default: "",
   },
 });
 const emit = defineEmits(["update:edit"]);

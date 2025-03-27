@@ -1,8 +1,16 @@
 import { useAuthStore } from "~/stores/auth";
 
-export default defineNuxtRouteMiddleware((to) => {
-  if (import.meta.server) return;
+export default defineNuxtRouteMiddleware(async (to) => {
+  if (to.path === "/auth") return;
   const authStore = useAuthStore();
+  const token = useCookie("auth_token");
+  if (!authStore.isAuthenticated && token.value) {
+    await authStore.initFormStorage();
+  }
+
+  if (authStore.error) {
+    return navigateTo("/auth");
+  }
   if (!authStore.isAuthenticated) {
     if (to.path !== "/auth") {
       return navigateTo("/auth");

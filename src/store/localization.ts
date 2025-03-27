@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 // Type for supported locales
-export type SupportedLocale = 'en' | 'fr' | 'es'
+export type SupportedLocale = 'en' | 'ar' | 'es'
 
 interface LocalizationState {
   currentLocale: SupportedLocale

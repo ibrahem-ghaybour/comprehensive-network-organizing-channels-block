@@ -1,20 +1,7 @@
 import type { ObjectDirective } from "vue";
-import { useAuthStore } from "~/store/auth";
+import { useAuthStore } from "~/stores/auth";
 
-/**
- * Custom directive for role-based permissions
- *
- * Usage:
- * v-role="'users:write'"                  - Element is shown only if user has the permission
- * v-role:disable="'users:write'"          - Element is disabled if user doesn't have the permission
- * v-role:hide="'users:write'"             - Element is hidden (display: none) if user doesn't have the permission
- * v-role="['users:write', 'users:read']"  - Element is shown only if user has ALL permissions
- * v-role.any="['users:write', 'users:read']" - Element is shown if user has ANY of the permissions
- *
- * @example <button v-role="'users:write'">Add User</button>
- * @example <button v-role:disable="'users:delete'">Delete User</button>
- */
-export const vRole: ObjectDirective<HTMLElement, string | string[]> = {
+export const vRole: ObjectDirective<HTMLElement, string> = {
   mounted(el, binding) {
     updateElement(el, binding);
   },
@@ -25,52 +12,35 @@ export const vRole: ObjectDirective<HTMLElement, string | string[]> = {
 
 function updateElement(el: HTMLElement, binding: any) {
   const authStore = useAuthStore();
-  const permissions = binding.value;
-  const mode = binding.arg || "remove"; // Default mode is 'remove'
-  const requireAll = !binding.modifiers.any; // Default is to require all permissions
+  const authorized = authStore.currentUser._id === binding.value;
 
-  let hasPermission = false;
-
-  if (Array.isArray(permissions)) {
-    // Check if user has all or any of the permissions
-    if (requireAll) {
-      hasPermission = permissions.every((permission) =>
-        authStore.hasPermission(permission)
-      );
-    } else {
-      hasPermission = permissions.some((permission) =>
-        authStore.hasPermission(permission)
-      );
+  // When authorized: reinsert element if it was previously removed
+  if (authorized) {
+    // Check if a placeholder exists that indicates the element was removed
+    if ((el as any).__placeholder) {
+      // Insert the element back before the placeholder
+      (el as any).__placeholder.parentNode?.insertBefore(el, (el as any).__placeholder);
+      // Remove the placeholder from the DOM
+      (el as any).__placeholder.remove();
+      // Delete the placeholder reference
+      delete (el as any).__placeholder;
     }
-  } else {
-    // Single permission check
-    hasPermission = authStore.hasPermission(permissions);
+    return;
   }
 
-  // Apply the appropriate action based on the mode
-  if (!hasPermission) {
-    switch (mode) {
-      case "disable":
-        el.setAttribute("disabled", "disabled");
-        // Add a class to indicate the element is disabled
-        el.classList.add("permission-disabled");
-        break;
-      case "hide":
-        el.style.display = "none";
-        break;
-      case "remove":
-      default:
-        // Remove the element from the DOM
-        if (el.parentNode) {
-          el.parentNode.removeChild(el);
-        }
-        break;
+  // When not authorized: remove the element and create a placeholder
+  if (!authorized && el.parentNode) {
+    // If we haven't created a placeholder already, create one
+    if (!(el as any).__placeholder) {
+      // Create a comment node as a placeholder
+      const placeholder = document.createComment("vRole placeholder");
+      // Store the placeholder on the element so we can reference it later
+      (el as any).__placeholder = placeholder;
+      // Insert the placeholder into the DOM before the element
+      el.parentNode.insertBefore(placeholder, el);
     }
-  } else {
-    // Ensure element is enabled and visible if the user has permission
-    el.removeAttribute("disabled");
-    el.classList.remove("permission-disabled");
-    el.style.display = "";
+    // Remove the element from the DOM
+    el.parentNode.removeChild(el);
   }
 }
 

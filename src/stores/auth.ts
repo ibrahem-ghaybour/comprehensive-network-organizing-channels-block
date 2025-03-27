@@ -102,9 +102,6 @@ export const useAuthStore = defineStore("auth_store", () => {
       isLoading.value = false;
     }
   }
-  if (import.meta.client) {
-    initFormStorage();
-  }
   return {
     currentUser,
     isAuthenticated,

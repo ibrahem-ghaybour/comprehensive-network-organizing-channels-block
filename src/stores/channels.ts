@@ -14,10 +14,10 @@ export const useChannelStore = defineStore(
     // if (import.meta.server) return; // Prevent SSR
     const api = useChannelsApi();
     const useAuth = useAuthStore();
-    // State: Stores channels and loading status
+    // State: Stores channels and isLoading status
     const channels = ref<Channel[]>([]);
     const totalChannels = ref<number>(0);
-    const loading = ref<boolean>(false);
+    const isLoading = ref<boolean>(false);
     const selectedChannel = ref<Channel | null>(null);
     const error = ref<string | null>(null);
 
@@ -26,7 +26,7 @@ export const useChannelStore = defineStore(
     const fetchChannels = async (params: ChannelFilters) => {
       if (channels.value.length > 0) return; // Use cached data, prevent unnecessary
       try {
-        loading.value = true;
+        isLoading.value = true;
         const { res: response, error: errorChannel } =
           await api.fetchChannels(params);
         if (errorChannel) {
@@ -43,14 +43,14 @@ export const useChannelStore = defineStore(
       } catch (error) {
         console.error("Error fetching channels:", error);
       } finally {
-        loading.value = false;
+        isLoading.value = false;
       }
     };
 
     // Fetch a single channel by ID
     const fetchChannelById = async (id: string) => {
       try {
-        loading.value = true;
+        isLoading.value = true;
         const { res: channelSe, error: errorChannel } =
           await api.fetchChannelById(id);
         if (errorChannel) {
@@ -65,7 +65,7 @@ export const useChannelStore = defineStore(
       } catch (error) {
         console.error("Error fetching channel:", error);
       } finally {
-        loading.value = false;
+        isLoading.value = false;
       }
     };
     const onChannelSelected = (id: string) => {
@@ -75,7 +75,7 @@ export const useChannelStore = defineStore(
     // Create a new channel
     const createChannel = async (data: CreateChannelRequest) => {
       try {
-        loading.value = true;
+        isLoading.value = true;
         const { res: newChannel, error: errorChannel } =
           await api.createChannel(data);
         if (errorChannel) {
@@ -90,14 +90,14 @@ export const useChannelStore = defineStore(
       } catch (error) {
         console.error("Error creating channel:", error);
       } finally {
-        loading.value = false;
+        isLoading.value = false;
       }
     };
 
     // Update an existing channel
     const updateChannel = async (id: string, data: UpdateChannelRequest) => {
       try {
-        loading.value = true;
+        isLoading.value = true;
         const { res: updatedChannel, error: errorChannel } =
           await api.updateChannel(id, data);
         if (errorChannel) {
@@ -113,14 +113,14 @@ export const useChannelStore = defineStore(
       } catch (error) {
         console.error("Error updating channel:", error);
       } finally {
-        loading.value = false;
+        isLoading.value = false;
       }
     };
 
     // Delete a channel
     const deleteChannel = async (id: string) => {
       try {
-        loading.value = true;
+        isLoading.value = true;
         const { error: errorChannel } = await api.deleteChannel(id);
         if (errorChannel) {
           error.value = errorChannel;
@@ -134,7 +134,7 @@ export const useChannelStore = defineStore(
       } catch (error) {
         console.error("Error deleting channel:", error);
       } finally {
-        loading.value = false;
+        isLoading.value = false;
       }
     };
     const clearSectionChannels = () => {
@@ -149,7 +149,6 @@ export const useChannelStore = defineStore(
     watch(
       () => useAuth.isAuthenticated,
       (isAuth) => {
-        if (import.meta.server) return;
         if (!isAuth) {
           clearSectionChannels();
         }
@@ -161,7 +160,7 @@ export const useChannelStore = defineStore(
       channels,
       totalChannels,
       selectedChannel,
-      loading,
+      isLoading,
       error,
       getChannelById,
       fetchChannels,
@@ -175,7 +174,7 @@ export const useChannelStore = defineStore(
   },
   {
     persist: {
-      storage: import.meta.client ? sessionStorage : undefined,
+      storage: sessionStorage as any,
       pick: ["channels", "selectedChannel"],
     },
   }
