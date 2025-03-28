@@ -7,7 +7,6 @@
       class="bg-gray-dark py-[0.35rem] px-2 rounded-sm w-full"
       :id="forId"
       :type="typeInput"
-      :maxlength="`${typeInput === 'text' ? '30' : '124'}`"
       minlength="3"
       :value="modelValue"
       @input="emit('update:modelValue', $event.target.value)"

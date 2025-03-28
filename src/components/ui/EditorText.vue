@@ -23,7 +23,7 @@ onMounted(() => {
       ],
     },
   });
-  quill.setContents(props.textEdit);
+  if (props.textEdit) quill.setContents(props.textEdit);
   contentHTML.value = quill.root.innerHTML;
   quill.on("text-change", () => {
     contentHTML.value = quill.root.innerHTML;
@@ -36,11 +36,10 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="QuEditorText" ref="editor"></div>
+    <div class="QuEditorText bg-gray-dark" ref="editor"></div>
   </div>
 </template>
 <style lang="scss">
-// @import "quill/dist/quill.snow.css";
 .QuEditorText {
   @import "@/assets/css/editorText.scss";
 }

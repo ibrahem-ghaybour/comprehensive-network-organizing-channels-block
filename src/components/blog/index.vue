@@ -1,6 +1,6 @@
 <template>
   <div
-    @click="emit('openDetails')"
+    @click="emit('openDetailsBlog')"
     class="w-full !text-text blogTextValueEdit p-3 pb-6 h-[140px] group relative bg-[--blog-color] rounded-lg mb-3 shadow-lg transition-all !cursor-pointer hover:-translate-y-1 hover:shadow-2xl"
   >
     <UiTooltip
@@ -16,18 +16,19 @@
       <h2 v-if="!isOpenEdit" class="!line-clamp-3">{{ blog.title }}</h2>
       <UiInput class="!w-[95%]" v-else v-model="dataChange.title" />
       <div class="pe-4 !text-[12px] flex items-center">
-        <span class="font-bold">userName :</span>
-        <UiTextHtml
-          class="!font-normal"
+        <span class="font-bold">{{ blog.userName }} :</span>
+        <span class=" !select-none ">
+          <UiTextHtml
           :qlEditor="false"
           :text="blog.htmlText"
         />
+        </span>
       </div>
     </div>
     <div class="absolute bottom-1 start-2 text-sm flex items-center gap-1">
       <span><font-awesome-icon :icon="['fas', 'comment']" /></span>
       .
-      <UiRelativeTime :time="blog.created_at" />
+      <UiRelativeTime class="!text-xs" :time="blog.created_at" />
     </div>
   </div>
 </template>
@@ -44,7 +45,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 library.add(faCaretDown, faComment, faCheck);
 
-const emit = defineEmits(["openDetails"]);
+const emit = defineEmits(["openDetailsBlog"]);
 
 const props = defineProps<{
   blog: Blog;
@@ -65,16 +66,15 @@ const saveChange = () => {
 <style lang="scss">
 .blogTextValueEdit {
   user-select: none !important;
-  cursor: pointer !important;
-  .ql-editor {
-    * {
-      cursor: pointer !important;
-    }
-  }
+  // cursor: pointer !important;
+//   .ql-editor {
+//     * {
+//       cursor: pointer !important;
+//     }
+//   }
 }
 .popupEditorText {
-  @import "@/assets/css/editorText.scss";
   user-select: none !important;
-  cursor: pointer !important;
+  // cursor: pointer !important;
 }
 </style>

@@ -9,28 +9,33 @@ import type {
 
 export function useBlogsApi() {
   return {
-    fetchBlogs: async (params: BlogFilters) =>
-      await apiRequest<PaginatedResponse<Blog>>({
+    fetchBlogs: async (params: Record<string, string>) =>
+      apiRequest<PaginatedResponse<Blog>>({
         endpoint: "blogs",
         method: "GET",
         params,
         requireAuth: true,
       }),
-    fetchBlogsByChannelId: async (channelId: string) =>
-      await apiRequest<Blog[]>({
+    fetchBlogsByChannelId: async (
+      channelId: string,
+      params: Record<string, string>
+    ) =>
+      apiRequest<PaginatedResponse<Blog>>({
         endpoint: `blogs/group/${channelId}`,
         method: "GET",
         requireAuth: true,
+        params,
       }),
-    fetchBlogById: async (id: string) =>
-      await apiRequest<Blog>({
+    fetchBlogById: async (id: string, params?: BlogFilters) =>
+      apiRequest<Blog>({
         endpoint: `blogs/${id}`,
         method: "GET",
+        params,
         requireAuth: true,
       }),
 
     createBlog: async (data: CreateBlogRequest) =>
-      await apiRequest<Blog>({
+      apiRequest<Blog>({
         endpoint: "blogs",
         method: "POST",
         body: data,
@@ -38,7 +43,7 @@ export function useBlogsApi() {
       }),
 
     updateBlog: async (id: string, data: UpdateBlogRequest) =>
-      await apiRequest<Blog>({
+      apiRequest<Blog>({
         endpoint: `blogs/${id}`,
         method: "PATCH",
         body: data,
@@ -46,7 +51,7 @@ export function useBlogsApi() {
       }),
 
     deleteBlog: async (id: string) =>
-      await apiRequest<void>({
+      apiRequest<void>({
         endpoint: `blogs/${id}`,
         method: "DELETE",
         requireAuth: true,

@@ -71,7 +71,7 @@ const select = (icon) => {
 const saveChannel = () => {
   if (props.channelId === "") newChannel();
   else useChannel.updateChannel(props.channelId, updateDataChannel.value);
-  router.push("?");
+  router.push(`/${props.channelId}`);
 };
 const newChannel = () => {
   useChannel.createChannel({
@@ -112,6 +112,4 @@ watch(
 );
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

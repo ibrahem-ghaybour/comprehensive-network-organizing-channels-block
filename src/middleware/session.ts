@@ -1,5 +1,5 @@
 import { defineNuxtRouteMiddleware, navigateTo } from '#app';
-import { useAuthStore } from '~/store/auth';
+import { useAuthStore } from '~/stores/auth';
 
 export default defineNuxtRouteMiddleware((to) => {
   // Skip middleware if running on server (SSR)

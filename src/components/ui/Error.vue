@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const emit = defineEmits(["reset", "restart"]);
 const props = defineProps({
   errorMessages: {

@@ -10,7 +10,7 @@ import type {
 export function useChannelsApi() {
   return {
     fetchChannels: async (params: ChannelFilters) =>
-      await apiRequest<PaginatedResponse<Channel>>({
+      apiRequest<PaginatedResponse<Channel>>({
         endpoint: "groups",
         method: "GET",
         params,
@@ -18,10 +18,10 @@ export function useChannelsApi() {
       }),
 
     fetchChannelById: async (id: string) =>
-      await apiRequest<Channel>({ endpoint: `groups/${id}`, method: "GET" }),
+      apiRequest<Channel>({ endpoint: `groups/${id}`, method: "GET" }),
 
     createChannel: async (data: CreateChannelRequest) =>
-      await apiRequest<Channel>({
+      apiRequest<Channel>({
         endpoint: "groups",
         method: "POST",
         body: data,
@@ -29,7 +29,7 @@ export function useChannelsApi() {
       }),
 
     updateChannel: async (id: string, data: UpdateChannelRequest) =>
-      await apiRequest<Channel>({
+      apiRequest<Channel>({
         endpoint: `groups/${id}`,
         method: "PATCH",
         body: data,
@@ -37,7 +37,7 @@ export function useChannelsApi() {
       }),
 
     deleteChannel: async (id: string) =>
-      await apiRequest<void>({
+      apiRequest<void>({
         endpoint: `groups/${id}`,
         method: "DELETE",
         requireAuth: true,

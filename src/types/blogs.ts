@@ -19,6 +19,7 @@ export interface Blog {
   groupId: string;
   userId: string;
   avtar: string;
+  userName: string;
   created_at: string;
   updated_at: string;
 }
@@ -52,6 +53,7 @@ export interface CreateBlogRequest {
   groupId: string;
   userId: string;
   avtar?: string;
+  userName: string;
 }
 
 // Update Blogs request interface
