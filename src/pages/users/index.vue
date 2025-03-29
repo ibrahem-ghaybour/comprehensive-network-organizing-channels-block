@@ -52,9 +52,9 @@
 </template>
 
 <script setup lang="ts">
-import { useUsersStore } from "~/store/users";
-import { useRolesStore } from "~/store/roles";
-import { useAuthStore } from "~/store/auth";
+// import { useUsersStore } from "~/stores/users";
+import { useRolesStore } from "~/stores/roles";
+import { useAuthStore } from "~/stores/auth";
 import SearchBar from "~/components/users/SearchBar.vue";
 import FilterControls from "~/components/users/FilterControls.vue";
 import UserTable from "~/components/users/UserTable.vue";

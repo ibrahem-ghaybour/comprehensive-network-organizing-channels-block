@@ -4,7 +4,6 @@ import type {
   CreateBlogRequest,
   UpdateBlogRequest,
   BlogFilters,
-  SortDirection,
 } from "~/types/blogs";
 import { useBlogsApi } from "~/api/blogs"; // adjust the import path as needed
 
@@ -55,7 +54,7 @@ export const useBlogsStore = defineStore(
         if (err_) {
           throw new Error(err_);
         }
-        blogs.value = sortBlogs(
+        blogs.value = sortList<Blog>(
           response.data,
           sortBy.value,
           sortDirection.value
@@ -87,7 +86,7 @@ export const useBlogsStore = defineStore(
           throw new Error(err_);
         }
         // Assuming response.data contains the blogs array
-        blogs.value = blogs.value = sortBlogs(
+        blogs.value = blogs.value = sortList<Blog>(
           response.data,
           sortBy.value,
           sortDirection.value
@@ -141,6 +140,7 @@ export const useBlogsStore = defineStore(
       error.value = null;
       try {
         const { res: updatedBlog, error: err } = await api.updateBlog(id, data);
+        if (err) throw new Error(err);
         const index = blogs.value.findIndex((blog) => blog._id === id);
         if (index !== -1) {
           blogs.value[index] = updatedBlog;
@@ -174,47 +174,6 @@ export const useBlogsStore = defineStore(
 
     // Getters (computed properties)
     const blogCount = computed(() => blogs.value.length);
-    const sortBlogs = (
-      blogs: Blog[],
-      sortBy?: string,
-      sortDirection: SortDirection = "asc"
-    ): Blog[] => {
-      if (!sortBy) return blogs;
-
-      return [...blogs].sort((a: any, b: any) => {
-        let valueA: string | number | Date, valueB: string | number | Date;
-
-        // Handle special case for full name
-        if (sortBy === "title" || sortBy === "htmlText") {
-          valueA = a.title || a.htmlText;
-          valueB = b.title || b.htmlText;
-        } else {
-          valueA = a[sortBy as keyof Blog];
-          valueB = b[sortBy as keyof Blog];
-        }
-        console.log("valueA, valueB");
-        // Handle null values
-        if (valueA === null && valueB === null) return 0;
-        if (valueA === null) return sortDirection === "asc" ? -1 : 1;
-        if (valueB === null) return sortDirection === "asc" ? 1 : -1;
-
-        // Compare dates
-        if (sortBy === "created_at") {
-          valueA = new Date(valueA).getTime();
-          valueB = new Date(valueB).getTime();
-        }
-
-        // Compare strings case-insensitive
-        if (typeof valueA === "string" && typeof valueB === "string") {
-          valueA = valueA.toLowerCase();
-          valueB = valueB.toLowerCase();
-        }
-
-        if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
-        if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
-        return 0;
-      });
-    };
     return {
       // State
       blogs,
@@ -238,11 +197,11 @@ export const useBlogsStore = defineStore(
       updateBlog,
       deleteBlog,
     };
+  },
+  {
+    persist: {
+      storage: sessionStorage as any,
+      pick: ["selectedBlog"],
+    },
   }
-  // {
-  //   persist: {
-  //     storage: sessionStorage as any,
-  //     pick: ["blogs", "selectedBlog"],
-  //   },
-  // }
 );

@@ -118,6 +118,7 @@ const handleLogin = async () => {
     email: email.value,
     password: password.value,
     name: name.value,
+    role: "user",
   });
   if (authStore.isAuthenticated) {
     await navigateTo("/");

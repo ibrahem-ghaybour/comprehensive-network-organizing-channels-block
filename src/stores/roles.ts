@@ -1,52 +1,10 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
 import type { Ref } from "vue";
 import type { Role } from "~/types/role";
-
-// Predefined roles with permissions for demo purposes
-const DEMO_ROLES: Role[] = [
-  {
-    id: "admin",
-    name: "Administrator",
-    description: "Full access to all features",
-    permissions: [
-      "users:read",
-      "users:write",
-      "users:delete",
-      "roles:read",
-      "roles:write",
-      "roles:delete",
-      "settings:read",
-      "settings:write",
-    ],
-    createdAt: "2023-01-01T00:00:00Z",
-  },
-  {
-    id: "manager",
-    name: "Manager",
-    description: "Can manage users but not roles",
-    permissions: ["users:read", "users:write", "settings:read"],
-    createdAt: "2023-01-01T00:00:00Z",
-  },
-  {
-    id: "user",
-    name: "Regular User",
-    description: "Basic access to the system",
-    permissions: ["users:read", "settings:read"],
-    createdAt: "2023-01-01T00:00:00Z",
-  },
-  {
-    id: "guest",
-    name: "Guest",
-    description: "Limited read-only access",
-    permissions: ["users:read"],
-    createdAt: "2023-01-01T00:00:00Z",
-  },
-];
-
+import { apiRequest } from "~/api/request";
 export const useRolesStore = defineStore("roles", () => {
   // State
-  const roles: Ref<Role[]> = ref([...DEMO_ROLES]);
+  const roles: Ref<Role[]> = ref([]);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
   const currentUserRole = ref<string | null>(null);
@@ -68,7 +26,12 @@ export const useRolesStore = defineStore("roles", () => {
     try {
       // For demo purposes, we'll use the predefined roles
       // In a real app, this would make an API call to fetch roles
-      roles.value = [...DEMO_ROLES];
+      const { res, error: err } = await apiRequest<Role[]>({
+        endpoint: "roles",
+        method: "GET",
+      });
+      if (err) throw new Error(err);
+      roles.value = res;
       return roles.value;
     } catch (err: any) {
       error.value = err.message || "Failed to fetch roles";

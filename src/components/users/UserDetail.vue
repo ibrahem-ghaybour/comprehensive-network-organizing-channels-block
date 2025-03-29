@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 // import {ha}
-import { useRolesStore } from "~/store/roles";
+import { useRolesStore } from "~/stores/roles";
 import { useLocalization } from "~/composables/useLocalization";
 import { usePermissions } from "~/composables/usePermission";
 import type { User } from "~/types/user";

@@ -4,7 +4,7 @@
     class="w-full !text-text blogTextValueEdit p-3 pb-6 h-[140px] group relative bg-[--blog-color] rounded-lg mb-3 shadow-lg transition-all !cursor-pointer hover:-translate-y-1 hover:shadow-2xl"
   >
     <UiTooltip
-      v-role="blog.userId"
+      v-royal="blog.userId"
       @click.stop="saveChange"
       :data-tooltip="isOpenEdit ? 'Save Blog' : 'Edit Blog'"
       class="opacity-0 !absolute top-2 end-4 !transition-opacity !duration-300 group-hover:opacity-100"

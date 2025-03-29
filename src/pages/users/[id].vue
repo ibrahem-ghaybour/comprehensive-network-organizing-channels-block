@@ -47,9 +47,9 @@
 </template>
 
 <script setup lang="ts">
-import { useUsersStore } from "~/store/users";
-import { useRolesStore } from "~/store/roles";
-import { useAuthStore } from "~/store/auth";
+// import { useUsersStore } from "~/store/users";
+import { useRolesStore } from "~/stores/roles";
+import { useAuthStore } from "~/stores/auth";
 import { usePermissions } from "~/composables/usePermission";
 import UserDetail from "~/components/users/UserDetail.vue";
 import UserForm from "~/components/users/UserForm.vue";

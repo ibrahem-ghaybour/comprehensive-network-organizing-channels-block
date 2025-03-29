@@ -96,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRolesStore } from "~/store/roles";
+import { useRolesStore } from "~/stores/roles";
 import { useLocalization } from "~/composables/useLocalization";
 import UserActions from "./UserActions.vue";
 import type { User } from "~/types/user";

@@ -5,7 +5,7 @@
       <span class="inline-block pt-4 pb-1 text-sm">Description</span>
       <UiEditorText class="!bg-background" @update:edit="htmlText = $event" />
     </form>
-    <div class="mt-3">
+    <div class="mt-6">
       <UiButton :loading="useBlogs.isLoading" color-button="var(--primary-color)" @click="createBlog"
         >create</UiButton
       >

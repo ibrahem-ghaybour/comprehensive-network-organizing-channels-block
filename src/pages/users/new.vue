@@ -29,8 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import { useUsersStore } from "~/store/users";
-import { useRolesStore } from "~/store/roles";
+// import { useUsersStore } from "~/stores/users";
+import { useRolesStore } from "~/stores/roles";
 import UserForm from "~/components/users/UserForm.vue";
 import type { User, CreateUserRequest } from "~/types/user";
 
@@ -39,7 +39,7 @@ definePageMeta({
 });
 
 const router = useRouter();
-const usersStore = useUsersStore();
+// const usersStore = useUsersStore();
 const rolesStore = useRolesStore();
 const { $i18n } = useNuxtApp();
 

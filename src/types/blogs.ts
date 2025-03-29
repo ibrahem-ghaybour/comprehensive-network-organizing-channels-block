@@ -7,7 +7,7 @@
 // "updated_at": "2025-03-18T20:45:31.935Z"
 
 // Sort direction type
-export type SortDirection = "asc" | "desc";
+
 
 // Role interface
 

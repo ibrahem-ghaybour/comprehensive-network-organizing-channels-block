@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
-import { useLocalizationStore } from '~/store/localization'
-import type { SupportedLocale } from '~/store/localization'
+import { useLocalizationStore } from '~/stores/localization'
+import type { SupportedLocale } from '~/stores/localization'
 import type { Composer } from 'vue-i18n'
 
 // Check if we're in a browser environment

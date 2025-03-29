@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { useChannelsApi } from "~/api/channels"; // Import your API
 import { useAuthStore } from "@/stores/auth";
+import { useBlogsStore } from "@/stores/blogs";
 import type {
   Channel,
   ChannelFilters,
@@ -14,21 +15,39 @@ export const useChannelStore = defineStore(
     // if (import.meta.server) return; // Prevent SSR
     const api = useChannelsApi();
     const useAuth = useAuthStore();
+    const useBlogs = useBlogsStore();
     // State: Stores channels and isLoading status
     const channels = ref<Channel[]>([]);
     const totalChannels = ref<number>(0);
     const isLoading = ref<boolean>(false);
     const selectedChannel = ref<Channel | null>(null);
     const error = ref<string | null>(null);
+    const filters = ref<ChannelFilters>({});
+    const sortBy = ref<string | undefined>(undefined);
+    const sortDirection = ref<SortDirection>("asc");
+    const pagination = ref({
+      page: 1,
+      pageSize: 10,
+      total: 0,
+      totalPages: 0,
+    });
 
     // Methods
     // Fetch all channels
-    const fetchChannels = async (params: ChannelFilters) => {
-      if (channels.value.length > 0) return; // Use cached data, prevent unnecessary
+    const fetchChannels = async () => {
+      // if (channels.value.length > 0) return;
+      isLoading.value = true;
+      error.value = null;
       try {
-        isLoading.value = true;
+        const queryParams: Record<string, string> = {
+          pageSize: pagination.value.pageSize.toString(),
+          page: pagination.value.page.toString(),
+        };
+        if (filters.value.name) queryParams.search = filters.value.name;
+        if (filters.value.description)
+          queryParams.search = filters.value.description;
         const { res: response, error: errorChannel } =
-          await api.fetchChannels(params);
+          await api.fetchChannels(queryParams);
         if (errorChannel) {
           error.value = errorChannel;
           throw new Error(
@@ -37,7 +56,12 @@ export const useChannelStore = defineStore(
               : "An error occurred while fetching channels"
           );
         }
-        channels.value = response.data;
+        console.log(response.data);
+        channels.value = sortList<Channel>(
+          response.data,
+          sortBy.value,
+          sortDirection.value
+        );
         console.log(response);
         totalChannels.value = response.total;
       } catch (error) {
@@ -69,8 +93,13 @@ export const useChannelStore = defineStore(
       }
     };
     const onChannelSelected = (id: string) => {
-      selectedChannel.value =
-        channels.value.find((ch) => ch._id === id) || null;
+      const channel = channels.value.find((ch) => ch._id === id) || null;
+      if (!channel) {
+        throw new Error("Channel not found");
+      }
+      useBlogs.selectedBlog = null;
+      useBlogs.filters = {};
+      selectedChannel.value = channel;
     };
     // Create a new channel
     const createChannel = async (data: CreateChannelRequest) => {
@@ -141,7 +170,6 @@ export const useChannelStore = defineStore(
       selectedChannel.value = null;
       channels.value = [];
       totalChannels.value = 0;
-      console.log("Cleared channels", channels.value);
     };
     const getChannelById = (id: string) =>
       channels.value.find((ch) => ch._id === id) || null;
@@ -152,7 +180,7 @@ export const useChannelStore = defineStore(
         if (!isAuth) {
           clearSectionChannels();
         }
-        fetchChannels({ pageSize: 15, page: 1 });
+        fetchChannels();
       },
       { immediate: true } // So it also runs on first load
     );
@@ -161,6 +189,10 @@ export const useChannelStore = defineStore(
       totalChannels,
       selectedChannel,
       isLoading,
+      filters,
+      pagination,
+      sortBy,
+      sortDirection,
       error,
       getChannelById,
       fetchChannels,
@@ -175,7 +207,7 @@ export const useChannelStore = defineStore(
   {
     persist: {
       storage: sessionStorage as any,
-      pick: ["channels", "selectedChannel"],
+      pick: ["selectedChannel"],
     },
   }
 );

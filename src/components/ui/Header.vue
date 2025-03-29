@@ -1,7 +1,7 @@
 <template>
   <header
     :class="classParent"
-    class="fixed-header h-[60px] bg-background-card border-b border-border shadow-sm flex items-center w-full !z-40"
+    class="fixed-header rounded-t-xl h-[60px] bg-background-card border-b border-border shadow-sm flex items-center w-full !z-40"
   >
     <div class="flex px-4 justify-between items-center w-full">
       <div class="flex items-center gap-4">

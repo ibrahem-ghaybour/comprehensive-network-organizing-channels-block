@@ -1,50 +1,82 @@
 <template>
-  <div
-    :class="[pageShift, 'transition-all duration-300']"
-    class="flex flex-col min-h-dvh bg-background text-text overflow-hidden"
-  >
-    <UiHeader>
-      <template #left>
-        <UiButtonSidbar @click="toggleSidebar" />
-      </template>
-    </UiHeader>
-    <main id="main-content" class="mt-auto">
-      <UiSidebar v-if="authStore.isAuthenticated" ref="sidebarRef">
-        <h2 class="text-2xl font-bold">Sidebar Content</h2>
+  <div class="flex flex-col h-dvh overflow-hidden bg-background text-text">
+    <div
+      :class="[
+        'flex gap-x-2 bg-[--dark-gray]',
+        authStore.isAuthenticated ? 'py-3' : '',
+      ]"
+    >
+      <UiSidebar
+        :storage-id="'sidebar'"
+        v-if="authStore.isAuthenticated"
+        ref="sidebarRef"
+      >
         <ChannelList />
       </UiSidebar>
-      <div :class="['transition-all duration-300']">
-        <slot></slot>
-      </div>
-    </main>
-    <footer
-      class="bg-background-card border-t border-border py-4 text-center text-sm"
-    >
-      <div class="container">
-        <p>&copy; {{ new Date().getFullYear() }} {{ $t("common.appName") }}</p>
-      </div>
-    </footer>
+      <main id="main-content" class="mt-auto flex-1">
+        <UiHeader>
+          <template #left>
+            <UiButtonSidbar @click="toggleSidebar" />
+          </template>
+        </UiHeader>
+
+        <div
+          :class="['transition-all duration-300 h-dvh pb-16 !overflow-y-auto']"
+        >
+          <slot></slot>
+          <footer
+            class="bg-background-card border-t border-border py-4 text-center text-sm"
+          >
+            <div class="container">
+              <p>
+                &copy; {{ new Date().getFullYear() }} IBRAHIM. All rights
+                reserved.{{ activeComponent?.isVisible }}
+              </p>
+            </div>
+          </footer>
+        </div>
+      </main>
+      <UiSidebar
+        :storage-id="'blogs'"
+        v-if="authStore.isAuthenticated"
+        :direction="'right'"
+        :class-parent="'!p-0'"
+        ref="sidebarRefRight"
+      >
+        <div v-if="activeComponent.isVisible">
+          <component :is="activeComponent.components.right" />
+        </div>
+      </UiSidebar>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { useThemeStore } from "~/store/theme";
 import { useAuthStore } from "~/stores/auth";
+import { useActiveComponent } from "~/stores/activeComponent";
 const sidebarRef = ref(null);
+const sidebarRefRight = ref(null);
 const authStore = useAuthStore();
+const activeComponent = useActiveComponent();
 // Function to toggle sidebar
 const toggleSidebar = () => {
   sidebarRef.value.toggle();
 };
-
+const toggleSidebarRight = () => {
+  sidebarRefRight.value.toggle();
+};
+watch(
+  () => activeComponent.hasComponent,
+  () => {
+    toggleSidebarRight();
+  }
+);
 // Calculate page shift when sidebar is open
 const pageShift = computed(() =>
-  sidebarRef.value?.isOpen&& authStore.isAuthenticated ? "lg:!ml-64 ml-0" : "!ml-0"
+  sidebarRef.value?.isOpen && authStore.isAuthenticated
+    ? "lg:!ml-64 ml-0"
+    : "!ml-0"
 );
-const { init } = useThemeStore();
-onMounted(() => {
-  init();
-});
 </script>
 
 <style scoped>

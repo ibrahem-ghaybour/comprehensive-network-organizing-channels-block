@@ -12,7 +12,6 @@
 // 2025-03-11T10:46:49.733+00:00
 // Channel status types
 // Sort direction type
-export type SortDirection = "asc" | "desc";
 
 // Role interface
 
@@ -22,7 +21,7 @@ export interface Channel {
   name: string;
   description: string;
   icon?: string;
-  idUser: string;
+  userId: string;
   created_at: string;
   updated_at: string;
 }

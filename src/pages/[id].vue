@@ -1,12 +1,23 @@
 <script lang="ts" setup>
 import { useBlogsStore } from "~/stores/blogs";
+import { useRolesStore } from "~/stores/roles";
+import { useActiveComponent } from "~/stores/activeComponent";
 const route = useRoute();
 const useBlogs = useBlogsStore();
+const useRoles = useRolesStore();
+const activeComponent = useActiveComponent();
 const isLoading = computed(() => {
   return useBlogs.isLoading;
 });
 const openNewBlog = ref(false);
-onMounted(() => {
+const showDetails = ref(false);
+const sidebarRef = ref(null);
+const toggleSidebar = () => {
+  sidebarRef.value.toggle();
+};
+onMounted(async () => {
+  console.log(route.params.id);
+  await useRoles.fetchRoles();
   if (route.params.id) {
     const id = Array.isArray(route.params.id)
       ? route.params.id[0]
@@ -44,53 +55,61 @@ watch(
   >
     <UiLoading />
   </div>
-  <div class="flex flex-col min-h-dvh bg-background">
-    <div v-if="!sectionEdit" class="p-3 pt-5">
-      <div class="flex gap-x-3 items-center justify-between">
-        <BlogShearchPar class="mb-3" @search="search" />
-        <UiButton
-          :color-button="'var(--primary-color)'"
-          @click="openNewBlog = true"
-          >new blog</UiButton
-        >
-      </div>
-      <TransitionGroup name="change" mode="out-in">
-        <div v-if="!isLoading">
-          <div
-            v-for="blog in useBlogs.blogs"
-            :key="blog._id"
-            class="flex flex-col bg-background"
+  <div class="flex">
+    <div class="flex w-full flex-col min-h-dvh bg-background">
+      <div v-if="!sectionEdit" class="p-3 pt-5">
+        <div class="flex gap-x-3 items-center justify-between">
+          <UiShearchPar
+            class="mb-3 bg-background-card rounded-xl p-1"
+            @search="search"
+          />
+          <UiButton
+            :color-button="'var(--primary-color)'"
+            @click="openNewBlog = true"
+            >new blog</UiButton
           >
-            <div class="flex flex-col bg-background">
-              <Transition name="change">
+        </div>
+        <TransitionGroup name="change" mode="out-in">
+          <div v-if="!isLoading">
+            <div
+              v-for="blog in useBlogs.blogs"
+              :key="blog._id"
+              class="flex flex-col bg-background"
+            >
+              <div class="flex flex-col bg-background">
                 <Blog
-                  @open-details-blog="useBlogs.onBlogSelected(blog._id)"
+                  @open-details-blog="
+                    (useBlogs.onBlogSelected(blog._id),
+                    (showDetails = true),
+                    activeComponent.showComponent('right', 'Details'))
+                  "
                   :blog="blog"
                 />
-              </Transition>
+                <!--  '~/components/blog/Detiels.vue' -->
+              </div>
             </div>
           </div>
-        </div>
-      </TransitionGroup>
+        </TransitionGroup>
+      </div>
+      <Transition name="change">
+        <ChannelEdit v-if="sectionEdit" :channel-id="editId" />
+      </Transition>
     </div>
-    <Transition name="change">
-      <ChannelEdit v-if="sectionEdit" :channel-id="editId" />
-    </Transition>
-    <Transition name="error" mode="out-in">
-      <Teleport to="body">
-        <UiError
-          v-if="useBlogs.error"
-          :error-messages="
-            useBlogs.error instanceof Error
-              ? useBlogs.error.message
-              : useBlogs.error
-          "
-          @reset="useBlogs.error = null"
-          @restart="useBlogs.fetchBlogsByIdChannelId(channelId)"
-        ></UiError>
-      </Teleport>
-    </Transition>
   </div>
+  <Transition name="error" mode="out-in">
+    <Teleport to="body">
+      <UiError
+        v-if="useBlogs.error"
+        :error-messages="
+          useBlogs.error instanceof Error
+            ? useBlogs.error.message
+            : useBlogs.error
+        "
+        @reset="useBlogs.error = null"
+        @restart="useBlogs.fetchBlogsByIdChannelId(channelId)"
+      ></UiError>
+    </Teleport>
+  </Transition>
   <UiPopup v-model:isOpen="openNewBlog">
     <BlogCreate />
   </UiPopup>

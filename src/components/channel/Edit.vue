@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5 w-full relative">
+  <div class="p-5 w-full min-h-dvh relative">
     <h2 class="mb-3 text-xl">
       Overview
       <UiCloseButton @click="router.push('?')" />
@@ -33,14 +33,14 @@
         <UiIcons @select-icon="select" />
       </div>
     </fieldset>
-    <Transition name="change" mode="out-in">
-      <ChannelSaveEdit
-        v-if="showSaveChange"
-        class="fixed w-[calc(100%-20rem)] bottom-6"
-        @reset="showSaveChange = false"
-        @save="saveChannel"
-    /></Transition>
   </div>
+  <Transition name="change" mode="out-in">
+    <ChannelSaveEdit
+      v-if="showSaveChange"
+      class="fixed w-[80%] start-[10%] bottom-6"
+      @reset="showSaveChange = false"
+      @save="saveChannel"
+  /></Transition>
 </template>
 
 <script setup>
@@ -112,4 +112,14 @@ watch(
 );
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.change-enter-active,
+.change-leave-active {
+  transition: all 0.2s ease;
+}
+.change-enter-from,
+.change-leave-to {
+  bottom: -30px;
+  opacity: 0;
+}
+</style>

@@ -1,8 +1,8 @@
 <template>
   <div
-    class="!text-[12px] bg-background-card flex items-center justify-between p-3 rounded-sm"
+    class="!text-[12px] z-50 bg-[#576ec8c7] flex items-center justify-between p-3 rounded-sm"
   >
-    <p class="text-sm">Careful - you have unsaved changes!</p>
+    <p class="text-sm ">Careful - you have unsaved changes!</p>
     <div class="flex gap-2">
       <button
         type="button"

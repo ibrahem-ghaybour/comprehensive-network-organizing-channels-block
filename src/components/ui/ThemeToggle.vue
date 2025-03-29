@@ -26,7 +26,7 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { useThemeStore } from "~/store/theme";
+import { useThemeStore } from "~/stores/theme";
 
 const themeStore = useThemeStore();
 const { theme } = storeToRefs(themeStore);

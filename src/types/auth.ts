@@ -5,11 +5,12 @@ export interface User {
   _id: string;
   created_at: string;
   updated_at: string;
-  admin: boolean;
+  role: string;
 }
 export interface authResponse {
   message?: string;
   token?: string;
   user?: User;
   error?: string;
+  role?: string;
 }

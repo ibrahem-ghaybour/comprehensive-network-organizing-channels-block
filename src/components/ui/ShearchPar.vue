@@ -4,11 +4,14 @@
       <UiInput
         v-model="searchTerm"
         :placeholder="$t('common.search')"
-        class="search-input"
+        class="search-input px-3 py-1 !rounded-lg"
         @input="debouncedSearch"
       />
-      <button class="search-button" @click="search">
-        <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
+
+      <button class="search-button text-xs" @click="search">
+        <slot name="icon">
+          <font-awesome-icon :icon="['fas', 'magnifying-glass']"
+        /></slot>
       </button>
     </div>
   </div>
@@ -64,7 +67,7 @@ watch(
 <style scoped>
 .search-bar {
   flex: 1;
-  min-width: 250px;
+  min-width: 150px;
 }
 
 .search-input-wrapper {
@@ -74,12 +77,9 @@ watch(
 }
 
 .search-input {
+  padding: 0.5rem 0.33rem;
   width: 100%;
-  padding: 0.5rem 2.5rem 0.5rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
   font-size: 0.875rem;
-  background-color: var(--card-background);
   color: var(--text-color);
 }
 

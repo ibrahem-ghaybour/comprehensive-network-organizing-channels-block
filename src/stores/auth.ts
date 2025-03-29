@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useAuthApi } from "@/api/auth"; // Import API
+import { useRolesStore } from "./roles";
 import type { User } from "~/types/auth";
 
 export const useAuthStore = defineStore("auth_store", () => {
@@ -102,6 +103,14 @@ export const useAuthStore = defineStore("auth_store", () => {
       isLoading.value = false;
     }
   }
+  // Check if user has permission for an action
+  function hasPermission(permission: string): boolean {
+    if (!isAuthenticated.value || !currentUser.value) return false;
+
+    const rolesStore = useRolesStore();
+    console.log(currentUser.value.role, 'ccccccccccc');
+    return rolesStore.hasPermission(currentUser.value.role, permission);
+  }
   return {
     currentUser,
     isAuthenticated,
@@ -115,5 +124,6 @@ export const useAuthStore = defineStore("auth_store", () => {
     authUpdateProfile,
     authLogout,
     authSignup,
+    hasPermission,
   };
 });
