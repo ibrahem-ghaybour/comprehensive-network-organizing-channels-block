@@ -4,7 +4,7 @@
       {{ label }}
     </label>
     <input
-      class="bg-gray-dark py-[0.35rem] px-2 rounded-sm w-full"
+      class="bg-gray-dark py-[0.35rem] px-2 rounded-lg w-full"
       :id="forId"
       :type="typeInput"
       minlength="3"

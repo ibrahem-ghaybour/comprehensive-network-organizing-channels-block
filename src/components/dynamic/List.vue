@@ -16,20 +16,20 @@
     </p>
     <ul>
       <li
-        v-for="channel in useChannels.channels"
+        v-for="channel in useChannels?.channels"
         :key="channel._id"
         class="relative group my-1 w-full hover:bg-gray-light transition duration-200 flex items-center rounded-[5px]"
       >
-        <Transition name="channel" :key="channel._id" mode="out-in">
+        <Transition name="channel" :key="channel?._id" mode="out-in">
           <button
             class="w-full group p-2 rounded-[5px] flex items-center justify-between capitalize truncate !text-start"
             @click="
-              useChannels.onChannelSelected(channel._id);
+              useChannels.onChannelSelected(channel?._id);
               directing(`/${channel._id}`);
             "
           >
             <div class="w-full flex items-center gap-x-1">
-              <span><UiIcon :icon="channel.icon" /></span>
+              <span><UiIcon :icon="channel?.icon" /></span>
               <span class="truncate">{{ channel.name }}</span>
             </div>
             <!-- Instead of hidden/flex, we animate opacity and position -->
@@ -39,12 +39,12 @@
             >
               <span
                 class=""
-                @click.stop="directing(`?edit=true&id=${channel._id}`)"
+                @click.stop="directing(`?edit=true&id=${channel?._id}`)"
               >
                 <font-awesome-icon :icon="['fas', 'file-pen']" />
               </span>
               <span
-                @click.stop="((channelId = channel._id), (isOpenPopup = true))"
+                @click.stop="((channelId = channel?._id), (isOpenPopup = true))"
               >
                 <font-awesome-icon :icon="['fas', 'trash-can']" />
               </span>

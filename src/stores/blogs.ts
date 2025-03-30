@@ -6,6 +6,7 @@ import type {
   BlogFilters,
 } from "~/types/blogs";
 import { useBlogsApi } from "~/api/blogs"; // adjust the import path as needed
+import { useActiveComponent } from "./activeComponent";
 
 export const useBlogsStore = defineStore(
   "blogs",
@@ -34,7 +35,7 @@ export const useBlogsStore = defineStore(
 
     // Access the blogs API
     const api = useBlogsApi();
-
+    const useActiveCom = useActiveComponent();
     // Actions
     async function fetchBlogs() {
       isLoading.value = true;
@@ -117,6 +118,10 @@ export const useBlogsStore = defineStore(
     }
     function onBlogSelected(id: string) {
       selectedBlog.value = blogs.value.find((blog) => blog._id === id);
+      if (!selectedBlog.value) {
+        throw new Error("Blog not found");
+      }
+      useActiveCom.showComponent("right", "Details");
     }
     async function createBlog(data: CreateBlogRequest) {
       isLoading.value = true;

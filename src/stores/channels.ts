@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { useChannelsApi } from "~/api/channels"; // Import your API
 import { useAuthStore } from "@/stores/auth";
 import { useBlogsStore } from "@/stores/blogs";
+import { useActiveComponent } from "@/stores/activeComponent";
 import type {
   Channel,
   ChannelFilters,
@@ -16,6 +17,7 @@ export const useChannelStore = defineStore(
     const api = useChannelsApi();
     const useAuth = useAuthStore();
     const useBlogs = useBlogsStore();
+    const useActiveCom = useActiveComponent();
     // State: Stores channels and isLoading status
     const channels = ref<Channel[]>([]);
     const totalChannels = ref<number>(0);
@@ -98,6 +100,7 @@ export const useChannelStore = defineStore(
         throw new Error("Channel not found");
       }
       useBlogs.selectedBlog = null;
+      useActiveCom.hideComponent("right");
       useBlogs.filters = {};
       selectedChannel.value = channel;
     };

@@ -7,19 +7,17 @@
       ]"
     >
       <UiSidebar
-        :storage-id="'sidebar'"
+        :storage-id="'left-sidebar'"
+        :default-storage="true"
         v-if="authStore.isAuthenticated"
         ref="sidebarRef"
       >
-        <ChannelList />
+        <div v-if="activeComponent.hasComponent.left">
+          <component :is="activeComponent.components.left" />
+        </div>
       </UiSidebar>
       <main id="main-content" class="mt-auto flex-1">
-        <UiHeader>
-          <template #left>
-            <UiButtonSidbar @click="toggleSidebar" />
-          </template>
-        </UiHeader>
-
+        <UiHeader />
         <div
           :class="['transition-all duration-300 h-dvh pb-16 !overflow-y-auto']"
         >
@@ -37,13 +35,16 @@
         </div>
       </main>
       <UiSidebar
-        :storage-id="'blogs'"
+        :storage-id="'right-sidebar'"
         v-if="authStore.isAuthenticated"
         :direction="'right'"
         :class-parent="'!p-0'"
         ref="sidebarRefRight"
       >
-        <div v-if="activeComponent.isVisible">
+        <template #mobile-close>
+          <UiCloseButton @click="toggleSidebarRight" />
+        </template>
+        <div v-if="activeComponent.hasComponent.right">
           <component :is="activeComponent.components.right" />
         </div>
       </UiSidebar>
@@ -68,14 +69,8 @@ const toggleSidebarRight = () => {
 watch(
   () => activeComponent.hasComponent,
   () => {
-    toggleSidebarRight();
+    sidebarRefRight.value.isOpen = activeComponent.hasComponent.right;
   }
-);
-// Calculate page shift when sidebar is open
-const pageShift = computed(() =>
-  sidebarRef.value?.isOpen && authStore.isAuthenticated
-    ? "lg:!ml-64 ml-0"
-    : "!ml-0"
 );
 </script>
 

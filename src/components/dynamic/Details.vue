@@ -1,10 +1,10 @@
 <template>
   <div class="w-full blogTextVaueEdit">
     <p class="px-4 h-[60px] flex items-center bg-background">
-      {{ useBlogs.selectedBlog.title }}
+      {{ useBlogs.selectedBlog?.title }}
     </p>
     <div
-      v-html="useBlogs.selectedBlog.htmlText"
+      v-html="useBlogs.selectedBlog?.htmlText"
       ref="textHtml"
       class="ql-editor multiline-truncate content-container"
     ></div>

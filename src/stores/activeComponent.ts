@@ -9,7 +9,7 @@ export const useActiveComponent = defineStore("activeComponent", () => {
 
   // One key per position
   const componentKeys = reactive<Record<PanelPosition, string | null>>({
-    left: null,
+    left: "List",
     right: null,
   });
 

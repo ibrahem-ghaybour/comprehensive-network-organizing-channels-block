@@ -79,9 +79,7 @@ watch(
               <div class="flex flex-col bg-background">
                 <Blog
                   @open-details-blog="
-                    (useBlogs.onBlogSelected(blog._id),
-                    (showDetails = true),
-                    activeComponent.showComponent('right', 'Details'))
+                    (useBlogs.onBlogSelected(blog._id), (showDetails = true))
                   "
                   :blog="blog"
                 />

@@ -15,6 +15,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  defaultStorage: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Dynamic keys based on storageId
@@ -30,6 +34,12 @@ const isDesktop = ref(false);
 
 // Init on mount
 onMounted(() => {
+  const isDefaultOpen = localStorage.getItem(STORAGE_KEY.value);
+  console.log(!isDefaultOpen, String(props.defaultStorage));
+  if (!isDefaultOpen && props.defaultStorage) {
+    localStorage.setItem(STORAGE_KEY.value, String(props.defaultStorage));
+  }
+
   isOpen.value = localStorage.getItem(STORAGE_KEY.value) === "true";
   const savedWidth = localStorage.getItem(WIDTH_KEY.value);
   if (savedWidth) sidebarWidth.value = Number(savedWidth);
@@ -90,7 +100,7 @@ defineExpose({ toggle, isOpen });
   <div
     ref="sidebarRef"
     v-show="isOpen"
-    class="h-dvh px-3 rounded-t-xl overflow-y-auto bg-background-card shadow-lg transition-all duration-300 !select-none max-lg:!w-full min-w-[180px] lg:max-w-[500px]"
+    class="h-dvh px-3 rounded-t-xl overflow-y-auto bg-background-card shadow-lg !select-none max-lg:!w-full min-w-[180px] lg:max-w-[500px]"
     :class="[
       isDesktop ? 'relative' : 'fixed top-0 z-50',
       direction === 'right' ? 'right-0' : 'left-0',
@@ -107,8 +117,10 @@ defineExpose({ toggle, isOpen });
     />
 
     <!-- Mobile Close -->
-    <UiCloseButton class="hidden max-lg:block" @click="toggle" />
 
+    <slot name="mobile-close"
+      ><UiCloseButton v-if="!isDesktop" @click="toggle"
+    /></slot>
     <!-- Slot Content -->
     <slot />
   </div>
