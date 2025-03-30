@@ -91,43 +91,88 @@ const stopResize = () => {
   window.removeEventListener("mousemove", resizeSidebar);
   window.removeEventListener("mouseup", stopResize);
 };
+const onBeforeEnter = (el: Element) => {
+  if (!isDesktop.value) {
+    (el as HTMLElement).style.transform =
+      `translateX(${props.direction === "left" ? "-100%" : "100%"})`;
+  }
+};
+
+const transitionClasses = computed(() => {
+  const base = {
+    enterActiveClass: "transition transform duration-300 ease-out",
+    leaveActiveClass: "transition transform duration-300 ease-in",
+    enterFromClass: "opacity-0",
+    enterToClass: "opacity-100",
+    leaveFromClass: "opacity-100",
+    leaveToClass: "opacity-0",
+  };
+
+  if (props.direction === "left") {
+    base.enterFromClass += " -translate-x-full";
+    base.enterToClass += " translate-x-0";
+    base.leaveFromClass += " translate-x-0";
+    base.leaveToClass += " -translate-x-full";
+  } else {
+    base.enterFromClass += " translate-x-full";
+    base.enterToClass += " translate-x-0";
+    base.leaveFromClass += " translate-x-0";
+    base.leaveToClass += " translate-x-full";
+  }
+
+  return base;
+});
 
 // Expose for parent
 defineExpose({ toggle, isOpen });
 </script>
 
 <template>
-  <div
-    ref="sidebarRef"
-    v-show="isOpen"
-    class="h-dvh px-3 rounded-t-xl overflow-y-auto bg-background-card shadow-lg !select-none max-lg:!w-full min-w-[180px] lg:max-w-[500px]"
-    :class="[
-      isDesktop ? 'relative' : 'fixed top-0 z-50',
-      direction === 'right' ? 'right-0' : 'left-0',
-      classParent,
-    ]"
-    :style="{ width: isDesktop ? sidebarWidth + 'px' : undefined }"
-  >
-    <!-- Resize Handle -->
+  <Transition name="sidebar" v-bind="transitionClasses">
     <div
-      v-if="isDesktop"
-      class="absolute top-0 h-full w-1 cursor-col-resize hover:bg-gray-600 transition"
-      :class="[props.direction === 'left' ? 'right-0' : 'left-0']"
-      @mousedown="startResize"
-    />
+      v-show="isOpen"
+      ref="sidebarRef"
+      class="h-dvh px-3 rounded-t-xl overflow-y-auto bg-background-card shadow-lg !select-none max-lg:!w-full min-w-[180px] lg:max-w-[500px]"
+      :class="[
+        isDesktop ? 'relative' : 'fixed top-0 z-50',
+        direction === 'right' ? 'right-0' : 'left-0',
+        classParent,
+      ]"
+      :style="{ width: isDesktop ? sidebarWidth + 'px' : undefined }"
+    >
+      <!-- Resize Handle -->
+      <div
+        v-if="isDesktop"
+        class="absolute top-0 h-full w-1 cursor-col-resize hover:bg-gray-600 transition"
+        :class="[props.direction === 'left' ? 'right-0' : 'left-0']"
+        @mousedown="startResize"
+      />
 
-    <!-- Mobile Close -->
+      <!-- Mobile Close -->
+      <slot name="mobile-close">
+        <UiCloseButton v-if="!isDesktop" @click="toggle" />
+      </slot>
 
-    <slot name="mobile-close"
-      ><UiCloseButton v-if="!isDesktop" @click="toggle"
-    /></slot>
-    <!-- Slot Content -->
-    <slot />
-  </div>
+      <!-- Slot Content -->
+      <slot />
+    </div>
+  </Transition>
 </template>
 
 <style scoped>
 * {
   user-select: none;
+}
+.sidebar-enter-active,
+.sidebar-leave-active {
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.sidebar-enter-from,
+.sidebar-leave-to {
+  opacity: 0;
+  transform: translateX(var(--sidebar-offset)) !important;
 }
 </style>

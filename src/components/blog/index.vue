@@ -17,11 +17,8 @@
       <UiInput class="!w-[95%]" v-else v-model="dataChange.title" />
       <div class="pe-4 !text-[12px] flex items-center">
         <span class="font-bold">{{ blog.userName }} :</span>
-        <span class=" !select-none ">
-          <UiTextHtml
-          :qlEditor="false"
-          :text="blog.htmlText"
-        />
+        <span class="!select-none">
+          <UiTextHtml :qlEditor="false" :text="blog.htmlText" />
         </span>
       </div>
     </div>
@@ -67,11 +64,11 @@ const saveChange = () => {
 .blogTextValueEdit {
   user-select: none !important;
   // cursor: pointer !important;
-//   .ql-editor {
-//     * {
-//       cursor: pointer !important;
-//     }
-//   }
+  //   .ql-editor {
+  //     * {
+  //       cursor: pointer !important;
+  //     }
+  //   }
 }
 .popupEditorText {
   user-select: none !important;

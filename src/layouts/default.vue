@@ -16,11 +16,9 @@
           <component :is="activeComponent.components.left" />
         </div>
       </UiSidebar>
-      <main id="main-content" class="mt-auto flex-1">
+      <main id="main-content" class="flex-1">
         <UiHeader />
-        <div
-          :class="['transition-all duration-300 h-dvh pb-16 !overflow-y-auto']"
-        >
+        <div :class="['h-dvh pb-16 !overflow-y-auto']">
           <slot></slot>
           <footer
             class="bg-background-card border-t border-border py-4 text-center text-sm"
@@ -42,7 +40,7 @@
         ref="sidebarRefRight"
       >
         <template #mobile-close>
-          <UiCloseButton @click="toggleSidebarRight" />
+          <UiCloseButton class="!z-50" @click="toggleSidebarRight" />
         </template>
         <div v-if="activeComponent.hasComponent.right">
           <component :is="activeComponent.components.right" />
@@ -59,12 +57,10 @@ const sidebarRef = ref(null);
 const sidebarRefRight = ref(null);
 const authStore = useAuthStore();
 const activeComponent = useActiveComponent();
-// Function to toggle sidebar
-const toggleSidebar = () => {
-  sidebarRef.value.toggle();
-};
+
 const toggleSidebarRight = () => {
   sidebarRefRight.value.toggle();
+  activeComponent.hideComponent("right");
 };
 watch(
   () => activeComponent.hasComponent,
