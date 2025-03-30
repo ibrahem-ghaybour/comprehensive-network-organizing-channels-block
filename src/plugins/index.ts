@@ -8,8 +8,6 @@
  */
 
 // API plugins
-export { default as apiPlugin } from './api';
-export { default as mockApiPlugin } from './mockApi';
 
 // i18n plugins
 export { default as i18nPlugin } from './i18n';
@@ -23,5 +21,4 @@ export { default as themeClientPlugin } from './theme.client';
 export default defineNuxtPlugin(() => {
   // This plugin doesn't need to do anything specific
   // It's just a container for other plugins
-  console.log('Plugins index loaded');
 }); 

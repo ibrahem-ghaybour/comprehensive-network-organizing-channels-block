@@ -8,7 +8,7 @@
         v-if="useBlogs.selectedBlog?.userId"
         @click.stop="toggleEdit"
         :data-tooltip="isEdit ? 'Save Blog' : 'Edit Blog'"
-        class="opacity-0 !absolute top-2 end-4 !transition-opacity !duration-300 group-hover:opacity-100"
+        class="opacity-0 !absolute end-4 !transition-opacity !duration-300 group-hover:opacity-100"
         :class="'text-primary'"
       >
         <font-awesome-icon :icon="['fas', isEdit ? 'check' : 'gear']" />
@@ -18,12 +18,13 @@
         v-if="!isEdit"
         v-html="useBlogs.selectedBlog?.htmlText"
         ref="textHtml"
-        class="ql-editor shadow-lg !mb-10 border-b-[10px] border-[--blog-color]  multiline-truncate content-container"
+        class="ql-editor shadow-lg !my-10 border-b-[10px] border-[--blog-color] multiline-truncate content-container"
       ></div>
 
       <div v-else>
         <UiEditorText @update:edit="updateContent" :textEdit="contentHtml" />
-        <UiImageInput class="mt-4 !text-start" />
+        <!-- <UiImageInput class="mt-4 " /> -->
+        <Comments />
       </div>
     </div>
   </div>
