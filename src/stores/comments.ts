@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useCommentsApi } from "~/api/comments";
+import { useBlogsStore } from "~/stores/blogs";
 import type {
   Comment,
   CreateCommentlRequest,
@@ -13,14 +14,18 @@ export const useCommentStore = defineStore(
     const isLoading = ref<boolean>(false);
     const error = ref<string | null>(null);
     const api = useCommentsApi();
-
+    const useBlogs = useBlogsStore();
     // Fetch all comments
     const fetchComments = async (params: Record<string, string> = {}) => {
       isLoading.value = true;
       error.value = null;
       try {
-        const { res, error } = await api.fetchComments(params);
-        if (error) throw new Error(error);
+        const { res, error: er } = await api.fetchComments(params);
+        if (er) {
+          comments.value = [];
+          error.value = er || "Failed to fetch comments.";
+          throw new Error(er);
+        }
         comments.value = res.data;
       } catch (err: any) {
         error.value = err.message || "Failed to fetch comments.";
@@ -92,6 +97,14 @@ export const useCommentStore = defineStore(
       }
     };
     const clearComments = () => (comments.value = []);
+    watch(
+      () => useBlogs.selectedBlog,
+      () => {
+        if (useBlogs.selectedBlog) {
+          fetchComments({ blogId: useBlogs.selectedBlog._id });
+        }
+      }
+    );
     return {
       comments,
       isLoading,

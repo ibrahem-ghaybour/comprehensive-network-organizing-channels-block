@@ -143,7 +143,7 @@ defineExpose({ toggle, isOpen });
       <!-- Resize Handle -->
       <div
         v-if="isDesktop"
-        class="absolute top-0 h-full w-1 cursor-col-resize hover:bg-gray-600 transition"
+        class="absolute top-0 z-50 h-full w-[0.3rem] cursor-col-resize hover:bg-gray-600 transition"
         :class="[props.direction === 'left' ? 'right-0' : 'left-0']"
         @mousedown="startResize"
       />

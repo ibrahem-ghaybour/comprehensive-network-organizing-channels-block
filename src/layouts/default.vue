@@ -7,17 +7,26 @@
       ]"
     >
       <UiSidebar
+      
+        :classParent="'max-lg:pt-6 '"
         :storage-id="'left-sidebar'"
         :default-storage="true"
         v-if="authStore.isAuthenticated"
         ref="sidebarRef"
       >
-        <div v-if="activeComponent.hasComponent.left">
+        <section v-if="activeComponent.hasComponent.left">
           <component :is="activeComponent.components.left" />
-        </div>
+        </section>
       </UiSidebar>
       <main id="main-content" class="flex-1">
-        <UiHeader />
+        <UiHeader>
+          <template #left>
+            <UiButtonSidbar
+              v-if="authStore.isAuthenticated"
+              @click="toogleSidebar"
+            />
+          </template>
+        </UiHeader>
         <div :class="['h-dvh pb-16 !overflow-y-auto']">
           <slot></slot>
           <footer
@@ -42,9 +51,9 @@
         <template #mobile-close>
           <UiCloseButton class="!z-50" @click="toggleSidebarRight" />
         </template>
-        <div v-if="activeComponent.hasComponent.right">
+        <section v-if="activeComponent.hasComponent.right">
           <component :is="activeComponent.components.right" />
-        </div>
+        </section>
       </UiSidebar>
     </div>
   </div>
@@ -62,6 +71,9 @@ const toggleSidebarRight = () => {
   sidebarRefRight.value.toggle();
   activeComponent.hideComponent("right");
 };
+const toogleSidebar = () => {
+  sidebarRef.value.toggle();
+}
 watch(
   () => activeComponent.hasComponent,
   () => {

@@ -14,45 +14,50 @@
         <font-awesome-icon :icon="['fas', 'plus']" />
       </button>
     </p>
-    <ul>
-      <li
-        v-for="channel in useChannels?.channels"
-        :key="channel._id"
-        class="relative group my-1 w-full hover:bg-gray-light transition duration-200 flex items-center rounded-[5px]"
-      >
-        <Transition name="channel" :key="channel?._id" mode="out-in">
-          <button
-            class="w-full group p-2 rounded-[5px] flex items-center justify-between capitalize truncate !text-start"
-            @click="
-              useChannels.onChannelSelected(channel?._id);
-              directing(`/${channel._id}`);
-            "
-          >
-            <div class="w-full flex items-center gap-x-1">
-              <span><UiIcon :icon="channel?.icon" /></span>
-              <span class="truncate">{{ channel.name }}</span>
-            </div>
-            <!-- Instead of hidden/flex, we animate opacity and position -->
-            <div
-              v-royal="channel.userId"
-              class="flex absolute right-1 gap-x-1 text-primary opacity-0 transform -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+
+    <aside>
+      <ul>
+        <li
+          v-for="channel in useChannels?.channels"
+          :key="channel._id"
+          class="relative group my-1 w-full hover:bg-gray-light transition duration-200 flex items-center rounded-[5px]"
+        >
+          <Transition name="channel" :key="channel?._id" mode="out-in">
+            <button
+              class="w-full group p-2 rounded-[5px] flex items-center justify-between capitalize truncate !text-start"
+              @click="
+                useChannels.onChannelSelected(channel?._id);
+                directing(`/${channel._id}`);
+              "
             >
-              <span
-                class=""
-                @click.stop="directing(`?edit=true&id=${channel?._id}`)"
+              <div class="w-full flex items-center gap-x-1">
+                <span><UiIcon :icon="channel?.icon" /></span>
+                <span class="truncate">{{ channel.name }}</span>
+              </div>
+              <!-- Instead of hidden/flex, we animate opacity and position -->
+              <div
+                v-royal="channel.userId"
+                class="flex absolute right-1 gap-x-1 text-primary opacity-0 transform -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
               >
-                <font-awesome-icon :icon="['fas', 'file-pen']" />
-              </span>
-              <span
-                @click.stop="((channelId = channel?._id), (isOpenPopup = true))"
-              >
-                <font-awesome-icon :icon="['fas', 'trash-can']" />
-              </span>
-            </div>
-          </button>
-        </Transition>
-      </li>
-    </ul>
+                <span
+                  class=""
+                  @click.stop="directing(`?edit=true&id=${channel?._id}`)"
+                >
+                  <font-awesome-icon :icon="['fas', 'file-pen']" />
+                </span>
+                <span
+                  @click.stop="
+                    ((channelId = channel?._id), (isOpenPopup = true))
+                  "
+                >
+                  <font-awesome-icon :icon="['fas', 'trash-can']" />
+                </span>
+              </div>
+            </button>
+          </Transition>
+        </li>
+      </ul>
+    </aside>
   </div>
   <UiPopup v-model:isOpen="isOpenPopup">
     <div class="text-center">

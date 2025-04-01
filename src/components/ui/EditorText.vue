@@ -107,7 +107,6 @@ onMounted(async () => {
 
   .ql-editor {
     min-height: 150px;
-    color: white;
   }
 
   .ql-editor [style*="background-color"] {
